@@ -11,7 +11,12 @@
             <column name="id" autoIncrement="true" type="integer">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)"></column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
