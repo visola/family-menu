@@ -3,6 +3,7 @@ package com.github.visola.familymenu.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,9 +37,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
           // Authenticate endpoint can be access by anyone
           .antMatchers(baseApiPath + "/login").anonymous()
+          .mvcMatchers(HttpMethod.POST, baseApiPath + "/family").anonymous()
 
           // All Others API calls will be secure
-          .antMatchers(baseApiPath + "/**").hasAnyRole("USER");
+          .antMatchers(baseApiPath + "/**").authenticated();
     }
 
 }

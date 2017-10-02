@@ -10,3 +10,6 @@ spring.datasource:
   password:
 
 spring.jpa.hibernate.ddl-auto: validate
+
+# 100 years, for now we don't care about sessions expiring
+security.token.filter.token-duration-in-hours: 876000
