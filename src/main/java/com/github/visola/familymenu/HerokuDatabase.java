@@ -17,7 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 public class HerokuDatabase {
 
     @Value("${database.url}")
-    String databaseUrl;
+    private String databaseUrl;
 
     @Bean
     public DataSource dataSource() throws URISyntaxException {

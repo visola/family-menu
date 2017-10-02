@@ -19,7 +19,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1")
 
+    testCompile("com.jcabi:jcabi-matchers:1.4")
     testCompile("junit:junit")
+    testCompile("org.hamcrest:hamcrest-core")
+    testCompile("org.mockito:mockito-core")
 }
 
 jacocoTestReport {
