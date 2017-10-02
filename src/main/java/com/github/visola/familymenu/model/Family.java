@@ -1,5 +1,7 @@
 package com.github.visola.familymenu.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,7 +11,9 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Family {
+public class Family implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @GeneratedValue
     @Id
