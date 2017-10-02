@@ -2,6 +2,8 @@ plugins {
     id "org.springframework.boot" version "1.5.7.RELEASE"
 }
 
+apply plugin: "findbugs"
+apply plugin: "jacoco"
 apply plugin: "java"
 
 repositories {
@@ -16,4 +18,14 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1")
+
+    testCompile("junit:junit")
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled false
+        html.enabled true
+        xml.enabled true
+    }
 }
