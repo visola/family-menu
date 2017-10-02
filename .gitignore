@@ -3,5 +3,6 @@ build
 .classpath
 .DS_Store
 .gradle
+node_modules
 .project
 .settings

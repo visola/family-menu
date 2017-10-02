@@ -1,10 +1,12 @@
 plugins {
+    id "com.moowork.node" version "1.2.0"
     id "org.springframework.boot" version "1.5.7.RELEASE"
 }
 
 apply plugin: "findbugs"
 apply plugin: "jacoco"
 apply plugin: "java"
+apply plugin: "eclipse"
 
 repositories {
     mavenCentral()
@@ -32,3 +34,27 @@ jacocoTestReport {
         xml.enabled true
     }
 }
+
+sourceSets {
+  main {
+    resources {
+      srcDir "${buildDir}/frontend"
+    }
+  }
+}
+
+eclipse {
+  classpath {
+    file.whenMerged { cp ->
+      cp.entries.add( new org.gradle.plugins.ide.eclipse.model.SourceFolder("${buildDir}/frontend", null))
+    }
+  }
+}
+
+task bundleFrontend (type: NpmTask) {
+  args = ["run", "bundleProd"]
+  inputs.dir file("src/frontend")
+  outputs.dir file("${buildDir}/frontend/static")
+}
+
+processResources.dependsOn bundleFrontend
