@@ -2,9 +2,14 @@ api.base.path: /api/v1
 
 liquibase.change-log: classpath:/db/changelog/master.xml
 
+security.token.filter.secret: not-very-secure-but-very-long-secret
+
 spring.datasource:
   url: jdbc:postgresql://localhost:5432/family_menu
   username:
   password:
 
 spring.jpa.hibernate.ddl-auto: validate
+
+# 100 years, for now we don't care about sessions expiring
+security.token.filter.token-duration-in-hours: 876000
