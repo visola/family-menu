@@ -1,22 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {
- BrowserRouter as Router,
- Route
-} from 'react-router-dom';
+import { render } from 'react-dom';
 
-import Home from './containers/Home';
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 
-const Application = () => (
-  <Router>
-    <div>
-      <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
-    </div>
-  </Router>
-)
+import { checkLoggedIn } from './actions/Security';
+import SecuredApplication from './containers/SecuredApplication';
+import familyMenuApp from './reducers/familyMenuApp';
 
-ReactDOM.render(
-  <Application />,
-  document.getElementById('container')
+
+const store = createStore(familyMenuApp, applyMiddleware(thunk));
+
+const App = () => (
+  <Provider store={store}>
+    <SecuredApplication />
+  </Provider>
 );
+
+render(<App />, document.getElementById('container'));
+store.dispatch(checkLoggedIn());

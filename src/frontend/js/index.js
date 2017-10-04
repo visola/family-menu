@@ -1,3 +1,2 @@
-import '../less/index.less'
-
-console.log("Hello world!");
+import '../less/index.less';
+import './app';
