@@ -4,7 +4,7 @@
   "scripts": {
     "bundle": "webpack --env development",
     "bundleProd": "webpack --env production -p",
-    "lint": "eslint index.js src/frontend"
+    "lint": "eslint webpack.config.js index.js src/frontend"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
