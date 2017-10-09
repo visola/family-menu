@@ -4,7 +4,8 @@
   "scripts": {
     "bundle": "webpack --env development",
     "bundleProd": "webpack --env production -p",
-    "lint": "eslint webpack.config.js index.js src/frontend"
+    "lint": "eslint webpack.config.js index.js src/frontend",
+    "watch": "webpack --env development --progress --colors --watch"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -34,6 +35,7 @@
     "axios": "^0.16.2",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
+    "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
