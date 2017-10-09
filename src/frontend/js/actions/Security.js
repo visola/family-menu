@@ -15,17 +15,17 @@ export function login(loginRequest) {
     dispatch({ type: LOGIN_REQUESTED, ...loginRequest });
 
     return axios.post('/api/v1/login', loginRequest)
-      .then(response => {
+      .then((response) => {
         dispatch({ type: LOGIN_SUCCSSFUL, token: response.data.token });
         dispatch(checkLoggedIn());
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response
-          && error.response.status == 403
-          && error.response.data.exception == 'org.springframework.security.authentication.BadCredentialsException') {
-            dispatch({ type: LOGIN_FAILED, message: 'Wrong family name/password combination.'});
+          && error.response.status === 403
+          && error.response.data.exception === 'org.springframework.security.authentication.BadCredentialsException') {
+          dispatch({ type: LOGIN_FAILED, message: 'Wrong family name/password combination.' });
         } else {
-          dispatch({ type: LOGIN_FAILED, message: 'Sorry, an error occured while trying to log you in.'});
+          dispatch({ type: LOGIN_FAILED, message: 'Sorry, an error occured while trying to log you in.' });
         }
       });
   };

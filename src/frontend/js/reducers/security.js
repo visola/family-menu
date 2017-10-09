@@ -13,21 +13,12 @@ function checkLoggedIn() {
   return userLoggedIn(token);
 }
 
-function handleLoginError(error) {
-  let { status, data } = error.response;
-  if (status == 403 && data.exception == 'org.springframework.security.authentication.BadCredentialsException') {
-    dispatch({ type: LOGIN_FAILED, message: 'Wrong family name/password combination.'});
-  } else {
-    dispatch({ type: LOGIN_FAILED, message: 'Sorry, an error occured while trying to log you in.'});
-  }
-}
-
 function userLoggedIn(token) {
   localStorage.setItem('token', token);
   const data = JSON.parse(atob(token.split('.')[1]));
   return {
     loggedIn: true,
-    family: data.sub
+    family: data.sub,
   };
 }
 
