@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Family implements Serializable {
 
@@ -23,7 +21,6 @@ public class Family implements Serializable {
     private String name;
     @NotNull
     @Size(min=2)
-    @JsonIgnore
     private String password;
 
     public Integer getId() {

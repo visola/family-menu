@@ -2,15 +2,15 @@ package com.github.visola.familymenu.controller;
 
 public class LoginRequest {
 
-    private String family;
+    private String name;
     private String password;
 
-    public String getFamily() {
-        return family;
+    public String getName() {
+        return name;
     }
 
-    public void setFamily(String family) {
-        this.family = family;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

@@ -35,7 +35,9 @@ public class FamilyController {
             }
 
             family.setPassword(passwordEncoder.encode(family.getPassword()));
-            return familyRepository.save(family);
+            family = familyRepository.save(family);
+            family.setPassword("****");
+            return family;
         }
         throw new BadRequestException("Not suppose to update family throw this endpoint.");
     }
