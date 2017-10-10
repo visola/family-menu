@@ -4,9 +4,13 @@ sudo: required
 jdk:
   - oraclejdk8
 
+services:
+  - postgresql
+
 before_install:
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+  - psql -c 'create database family_menu;' -U postgres
 
 script: ./gradlew --parallel clean check jacocoTestReport jacocoIntegrationTestCoverageReport
 
