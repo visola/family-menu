@@ -1,6 +1,6 @@
 plugins {
-    id "com.moowork.node" version "1.2.0"
-    id "org.springframework.boot" version "1.5.7.RELEASE"
+  id "com.moowork.node" version "1.2.0"
+  id "org.springframework.boot" version "1.5.7.RELEASE"
 }
 
 apply plugin: "findbugs"
@@ -9,36 +9,50 @@ apply plugin: "java"
 apply plugin: "eclipse"
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    compile("com.zaxxer:HikariCP")
-    compile("org.postgresql:postgresql")
-    compile("org.liquibase:liquibase-core")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1")
+  compile("com.zaxxer:HikariCP")
+  compile("org.postgresql:postgresql")
+  compile("org.liquibase:liquibase-core")
+  compile("org.springframework.boot:spring-boot-starter-data-jpa")
+  compile("org.springframework.boot:spring-boot-starter-security")
+  compile("org.springframework.boot:spring-boot-starter-web")
+  compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1")
 
-    testCompile("com.jcabi:jcabi-matchers:1.4")
-    testCompile("junit:junit")
-    testCompile("org.hamcrest:hamcrest-core")
-    testCompile("org.mockito:mockito-core")
+  testCompile("com.jcabi:jcabi-matchers:1.4")
+  testCompile("junit:junit")
+  testCompile("org.hamcrest:hamcrest-core")
+  testCompile("org.mockito:mockito-core")
+}
+
+configurations {
+  integrationTestCompile.extendsFrom testCompile
+  integrationTestRuntime.extendsFrom testRuntime
 }
 
 jacocoTestReport {
-    reports {
-        csv.enabled false
-        html.enabled true
-        xml.enabled true
-    }
+  reports {
+    html.enabled true
+    xml.enabled true
+  }
 }
 
 sourceSets {
   main {
     resources {
       srcDir "${buildDir}/frontend"
+    }
+  }
+  integrationTest {
+    java {
+      compileClasspath += main.output + test.output
+      runtimeClasspath += main.output + test.output
+      srcDir 'src/integration-test/java'
+    }
+    resources {
+      srcDir 'src/integration-test/resources'
     }
   }
 }
@@ -48,6 +62,9 @@ eclipse {
     file.whenMerged { cp ->
       cp.entries.add( new org.gradle.plugins.ide.eclipse.model.SourceFolder("${buildDir}/frontend", null))
     }
+  }
+  classpath {
+    plusConfigurations += [configurations.integrationTestCompile]
   }
 }
 
@@ -67,4 +84,124 @@ task frontendLint (type: NpmTask) {
   outputs.dir file("${buildDir}/frontend/static")
 }
 
+def jacocoDir = "${buildDir}/jacoco"
+def jacocoVersion = "0.7.9"
+def jacocoZip = "${jacocoDir}/jacoco-${jacocoVersion}.zip"
+def jacocoITOutput = "${buildDir}/it-jacoco.exec"
+
+task createJacocoDirectory {
+  doLast {
+    mkdir jacocoDir
+  }
+}
+
+task downloadJacoco {
+  dependsOn createJacocoDirectory
+  outputs.file jacocoZip
+
+  doLast {
+    ant.get(
+      dest: jacocoDir,
+      src: "http://repo1.maven.org/maven2/org/jacoco/jacoco/${jacocoVersion}/jacoco-${jacocoVersion}.zip"
+    )
+  }
+}
+
+task unzipJacoco(type: Copy) {
+  dependsOn downloadJacoco
+  outputs.dir jacocoDir
+
+  def zipFile = file("${jacocoDir}/jacoco-${jacocoVersion}.zip")
+  def outputDir = file(jacocoDir)
+
+  from zipTree(zipFile)
+  into outputDir
+}
+
+task createStartDirectory {
+  outputs.dir "${buildDir}/start"
+  doLast {
+    mkdir "${buildDir}/start"
+  }
+}
+
+task startApplication {
+  description = "Starts application on the background"
+  group = "Application"
+  dependsOn assemble, createStartDirectory, unzipJacoco
+
+  doLast {
+    ProcessBuilder builder = new ProcessBuilder(
+      "java",
+      "-javaagent:build/jacoco/lib/jacocoagent.jar=destfile=${jacocoITOutput}",
+      "-jar",
+      "${buildDir}/libs/${project.name}.jar"
+    )
+
+    File outputFile = new File("${buildDir}/start/application.txt")
+    builder.redirectError(outputFile)
+    builder.redirectOutput(outputFile)
+    Process process = builder.start()
+
+    // Wait for process to start
+    def output = outputFile.text
+    def waitCount = 0
+    while(!output.contains("Started Main in")) {
+      output = outputFile.text
+      Thread.sleep(1000)
+      waitCount ++
+      if (waitCount > 30 || output.contains("APPLICATION FAILED TO START")) {
+        throw new GradleException("Application failed to start. Check the application log to see what went wrong: file://${outputFile}")
+      }
+    }
+  }
+}
+
+task stopApplication {
+  description = "Find and stop all running application instances"
+  group = "Application"
+
+  doLast {
+    def proc = "ps -le".execute()
+
+    def text = proc.text
+    text.split("\n")
+      .findAll { it.endsWith("${project.name}.jar") }
+      .each {
+        def pid = it.split("\\s")[1]
+        logger.debug('PID found: ' + pid)
+        "kill ${pid}".execute()
+      }
+  }
+}
+
+task jacocoIntegrationTestCoverageReport(type: JacocoReport) {
+  description = "Generate coverage reports for integration tests"
+  group = "Verification"
+
+  sourceSets sourceSets.main
+  executionData file(jacocoITOutput)
+  reports {
+      html.enabled true
+      xml.enabled true
+  }
+}
+
+task integrationTest(type: Test) {
+  description = "Run all integration tests"
+  group = "Verification"
+  dependsOn startApplication
+  mustRunAfter test
+
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+task cleanNpm (type: Delete) {
+  delete 'node_modules'
+}
+
+clean.dependsOn cleanNpm
 check.dependsOn frontendLint
+check.dependsOn integrationTest
+check.finalizedBy stopApplication
