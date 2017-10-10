@@ -35,7 +35,7 @@ public class FamilyController {
             }
 
             family.setPassword(passwordEncoder.encode(family.getPassword()));
-            return hidePassword(familyRepository.save(family));
+            return new FamilyView(familyRepository.save(family));
         }
         throw new BadRequestException("Not suppose to update family throw this endpoint.");
     }
@@ -46,15 +46,7 @@ public class FamilyController {
         if (loadedFamily == null) {
             throw new ResourceNotFoundException("Family with ID " + id + " does not exist.");
         }
-        return hidePassword(loadedFamily);
-    }
-
-    private Family hidePassword(Family family) {
-        Family newFamily = new Family();
-        newFamily.setId(family.getId());
-        newFamily.setName(family.getName());
-        newFamily.setPassword("****");
-        return newFamily;
+        return new FamilyView(loadedFamily);
     }
 
 }

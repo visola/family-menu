@@ -10,16 +10,19 @@ function checkLoggedIn() {
   if (token == null) {
     return { loggedIn: false, family: null };
   }
-  return userLoggedIn(token);
+  return loggedInUser(token);
 }
 
-function userLoggedIn(token) {
-  localStorage.setItem('token', token);
-  const data = JSON.parse(atob(token.split('.')[1]));
+function loggedInUser(token) {
   return {
     loggedIn: true,
-    family: data.sub,
+    family: JSON.parse(atob(token.split('.')[1])).sub,
   };
+}
+
+function logUserIn(token) {
+  localStorage.setItem('token', token);
+  return loggedInUser(token);
 }
 
 export function security(state = { loggingIn: false, loggedIn: false, family: null }, action) {
@@ -31,7 +34,7 @@ export function security(state = { loggingIn: false, loggedIn: false, family: nu
       return Object.assign({}, state, { loggingIn: true });
 
     case LOGIN_SUCCSSFUL:
-      return Object.assign({}, state, { loggingIn: false, ...userLoggedIn(action.token) });
+      return Object.assign({}, state, { loggingIn: false, ...logUserIn(action.token) });
 
     case LOGIN_FAILED:
       return Object.assign({}, state, { loggingIn: false, loggingError: action.message });

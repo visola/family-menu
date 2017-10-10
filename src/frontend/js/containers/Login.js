@@ -42,7 +42,7 @@ class Login extends React.Component {
   }
 
   renderStatus() {
-    if (this.props.loggingError !== '') {
+    if (this.props.loggingError) {
       return <p className="text-danger">{this.props.loggingError}</p>;
     } else if (this.props.loggingIn) {
       return <p>Logging in...</p>;
@@ -59,7 +59,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    loggingError: state.security.loggingError || '',
+    loggingError: state.security.loggingError,
     loggingIn: state.security.loggingIn,
   };
 };
