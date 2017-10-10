@@ -70,9 +70,10 @@ public class FamilyControllerTest {
 
     @Test
     public void encodePasswordBeforeCreatingFamily() {
+        String originalPassword = "Another Password";
         Family family = new Family();
         family.setName("Test");
-        family.setPassword("Another Password");
+        family.setPassword(originalPassword);
 
         String encodedPassword = "MyEncodedPassword";
         Mockito.when(passwordEncoder.encode(family.getPassword())).thenReturn(encodedPassword);
@@ -80,7 +81,9 @@ public class FamilyControllerTest {
         Mockito.when(familyRepository.save(family)).thenReturn(family);
 
         Family createdFamily = familyController.createFamily(family);
-        Assert.assertEquals("Should encode password before saving.", encodedPassword, createdFamily.getPassword());
+        MatcherAssert.assertThat("Should return hidden password", createdFamily.getPassword(), RegexMatchers.matchesPattern("\\*+"));
+
+        Mockito.verify(passwordEncoder, Mockito.atLeastOnce()).encode(originalPassword);
     }
 
     private Family setupFamilyRepositoryWithOneFamily() {

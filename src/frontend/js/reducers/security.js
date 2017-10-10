@@ -1,5 +1,8 @@
 import {
   CHECK_LOGGED_IN,
+  LOGIN_REQUESTED,
+  LOGIN_SUCCSSFUL,
+  LOGIN_FAILED,
 } from '../actions/Security';
 
 function checkLoggedIn() {
@@ -7,17 +10,35 @@ function checkLoggedIn() {
   if (token == null) {
     return { loggedIn: false, family: null };
   }
-  const data = JSON.parse(atob(token.split('.')[1]));
+  return loggedInUser(token);
+}
+
+function loggedInUser(token) {
   return {
     loggedIn: true,
-    family: data.sub,
+    family: JSON.parse(atob(token.split('.')[1])).sub,
   };
 }
 
-export function security(state = { loggedIn: false, family: null }, action) {
+function logUserIn(token) {
+  localStorage.setItem('token', token);
+  return loggedInUser(token);
+}
+
+export function security(state = { loggingIn: false, loggedIn: false, family: null }, action) {
   switch (action.type) {
     case CHECK_LOGGED_IN:
       return Object.assign({}, state, checkLoggedIn(state));
+
+    case LOGIN_REQUESTED:
+      return Object.assign({}, state, { loggingIn: true });
+
+    case LOGIN_SUCCSSFUL:
+      return Object.assign({}, state, { loggingIn: false, ...logUserIn(action.token) });
+
+    case LOGIN_FAILED:
+      return Object.assign({}, state, { loggingIn: false, loggingError: action.message });
+
     default:
       return state;
   }

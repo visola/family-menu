@@ -35,7 +35,7 @@ public class FamilyController {
             }
 
             family.setPassword(passwordEncoder.encode(family.getPassword()));
-            return familyRepository.save(family);
+            return new FamilyView(familyRepository.save(family));
         }
         throw new BadRequestException("Not suppose to update family throw this endpoint.");
     }
@@ -46,8 +46,7 @@ public class FamilyController {
         if (loadedFamily == null) {
             throw new ResourceNotFoundException("Family with ID " + id + " does not exist.");
         }
-        loadedFamily.setPassword("****");
-        return loadedFamily;
+        return new FamilyView(loadedFamily);
     }
 
 }

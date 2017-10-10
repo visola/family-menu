@@ -3,11 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Application from '../components/Application';
-import Login from '../components/Login';
+import Login from '../containers/Login';
 
-/* eslint-disable arrow-parens */
 const mapStateToProps = (state) => ({ loggedIn: state.security.loggedIn });
-/* eslint-enable arrow-parens */
 
 class SecuredApplicationComponent extends React.Component {
   render() {

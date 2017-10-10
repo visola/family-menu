@@ -12,7 +12,10 @@
     "react"
   ],
   "rules": {
+    "arrow-body-style": "off",
+    "arrow-parens": "off",
     "import/extensions": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-use-before-define": "off"
   }
 }
