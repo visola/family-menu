@@ -12,24 +12,38 @@ repositories {
   mavenCentral()
 }
 
+configurations {
+  integrationTestCompile.extendsFrom testCompile
+  integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
   compile("com.zaxxer:HikariCP")
+  compile("net.minidev:json-smart:2.2.1")
   compile("org.postgresql:postgresql")
   compile("org.liquibase:liquibase-core")
   compile("org.springframework.boot:spring-boot-starter-data-jpa")
   compile("org.springframework.boot:spring-boot-starter-security")
   compile("org.springframework.boot:spring-boot-starter-web")
-  compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1")
+  compile("org.visola.spring.security:spring-security-token-filter-spring-boot-starter:1.1") {
+    exclude group: "net.minidev", module: "json-smart"
+  }
 
   testCompile("com.jcabi:jcabi-matchers:1.4")
   testCompile("junit:junit")
   testCompile("org.hamcrest:hamcrest-core")
   testCompile("org.mockito:mockito-core")
-}
 
-configurations {
-  integrationTestCompile.extendsFrom testCompile
-  integrationTestRuntime.extendsFrom testRuntime
+  integrationTestCompile("com.google.code.findbugs:annotations:2.0.3")
+  integrationTestCompile("com.google.guava:guava:22.0")
+  integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.6.0") {
+    exclude group: "com.google.guava", module: "guava"
+  }
+  integrationTestCompile("org.seleniumhq.selenium:selenium-support:3.6.0") {
+    exclude group: "com.google.guava", module: "guava"
+  }
+  integrationTestCompile("org.springframework.boot:spring-boot-starter-test")
+  integrationTestCompile("org.springframework:spring-test")
 }
 
 jacocoTestReport {
