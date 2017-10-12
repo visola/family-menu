@@ -9,7 +9,7 @@ services:
 
 before_install:
   # Setup Google Chrome
-  - export TEST_CHROME_WEBDRIVER_PATH=/usr/bin/google-chrome
+  - export WEBDRIVER_PATH=/usr/bin/google-chrome
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
 

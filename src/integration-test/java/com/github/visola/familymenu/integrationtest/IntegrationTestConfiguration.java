@@ -16,7 +16,7 @@ import liquibase.integration.spring.SpringLiquibase;
 @Profile("integration-test")
 public class IntegrationTestConfiguration {
 
-    @Value("${test.chrome.webdriver.path:${user.home}/bin/chromedriver}")
+    @Value("${test.chrome.webdriver.path:${WEBDRIVER_PATH:${user.home}/bin/chromedriver}}")
     private String pathToWebDriver;
 
     @Bean

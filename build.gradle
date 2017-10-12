@@ -139,10 +139,30 @@ task createStartDirectory {
   }
 }
 
+task stopApplication {
+  description = "Find and stop all running application instances"
+  group = "Application"
+  mustRunAfter check
+
+  doLast {
+    def proc = "ps -le".execute()
+
+    def text = proc.text
+    text.split("\n")
+      .findAll { it.endsWith("${project.name}.jar") }
+      .each {
+        def pid = it.split("\\s")[1]
+        logger.debug('PID found: ' + pid)
+        "kill ${pid}".execute()
+      }
+  }
+}
+
 task startApplication {
   description = "Starts application on the background"
   group = "Application"
   dependsOn assemble, createStartDirectory, unzipJacoco
+  finalizedBy stopApplication
 
   doLast {
     ProcessBuilder builder = new ProcessBuilder(
@@ -168,24 +188,6 @@ task startApplication {
         throw new GradleException("Application failed to start. Check the application log to see what went wrong: file://${outputFile}")
       }
     }
-  }
-}
-
-task stopApplication {
-  description = "Find and stop all running application instances"
-  group = "Application"
-
-  doLast {
-    def proc = "ps -le".execute()
-
-    def text = proc.text
-    text.split("\n")
-      .findAll { it.endsWith("${project.name}.jar") }
-      .each {
-        def pid = it.split("\\s")[1]
-        logger.debug('PID found: ' + pid)
-        "kill ${pid}".execute()
-      }
   }
 }
 
@@ -218,4 +220,3 @@ task cleanNpm (type: Delete) {
 clean.dependsOn cleanNpm
 check.dependsOn frontendLint
 check.dependsOn integrationTest
-check.finalizedBy stopApplication
