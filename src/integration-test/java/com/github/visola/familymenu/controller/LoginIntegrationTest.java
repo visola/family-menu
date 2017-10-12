@@ -18,16 +18,43 @@ public class LoginIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void userCanLoginWithExistingFamily() {
-        Family family = new Family();
-        family.setName("test");
-        family.setPassword("password");
+        String name = "test";
+        String password = "password";
+        createFamily(name, password);
 
-        familyController.createFamily(family);
+        goToLoginPage();
+        webDriver.findElement(By.xpath("//input[1]")).sendKeys(name);
+        webDriver.findElement(By.xpath("//input[2]")).sendKeys(password);
+        webDriver.findElement(By.cssSelector("button")).click();
 
+        waitUntil(d -> d.findElement(By.xpath("//p[contains(text(), 'Hello World!')]")));
+    }
+
+    @Test
+    public void failedToLoginWithWrongPassword() {
+        String name = "test";
+        String password = "password";
+        createFamily(name, password);
+
+        goToLoginPage();
+        webDriver.findElement(By.xpath("//input[1]")).sendKeys(name);
+        webDriver.findElement(By.xpath("//input[2]")).sendKeys("notMyPassword");
+        webDriver.findElement(By.cssSelector("button")).click();
+
+        waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), 'Wrong family name/password combination.')]")));
+    }
+
+    private void goToLoginPage() {
         webDriver.navigate().to("http://localhost:8080");
-
         waitUntil(d -> d.findElement(By.id("container")));
-        System.out.println(webDriver.findElement(By.tagName("body")).getAttribute("innerHTML"));
+    }
+
+    private Family createFamily(String name, String password) {
+        Family family = new Family();
+        family.setName(name);
+        family.setPassword(password);
+
+        return familyController.createFamily(family);
     }
 
 }

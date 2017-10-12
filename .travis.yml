@@ -8,6 +8,18 @@ services:
   - postgresql
 
 before_install:
+  # Setup Google Chrome
+  - export TEST_CHROME_WEBDRIVER_PATH=/usr/bin/google-chrome
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg -i google-chrome*.deb
+
+  # Setup Google Chrome Webdriver
+  - mkdir bin
+  - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -O bin/chromedriver.zip
+  - unzip -d bin bin/chromedriver.zip
+  - chmod +x bin/chromedriver
+
+  # Setup Codacy Executable
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
   - psql -c 'create database family_menu;' -U postgres

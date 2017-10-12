@@ -1,7 +1,7 @@
 package com.github.visola.familymenu.controller;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,14 +19,10 @@ public class CustomExceptionHandler {
         return mv;
     }
 
-    @ExceptionHandler({BadRequestException.class, PSQLException.class})
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    // TODO: This is returning a 404, not a 400
-    public ModelAndView handleBadRequest(Exception e) {
-        ModelAndView mv = new ModelAndView();
-        mv.setStatus(HttpStatus.BAD_REQUEST);
-        mv.addObject(e);
-        return mv;
+    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
 }
