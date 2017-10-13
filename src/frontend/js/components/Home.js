@@ -1,8 +1,10 @@
 import React from 'react';
 
+import People from '../containers/People';
+
 class Home extends React.Component {
   render() {
-    return <p>You're home!</p>;
+    return <People />;
   }
 }
 

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import {
   CHECK_LOGGED_IN,
   CREATE_FAMILY_REQUESTED,
@@ -13,6 +15,7 @@ function checkLoggedIn() {
   if (token == null) {
     return { loggedIn: false, family: null };
   }
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   return loggedInUser(token);
 }
 
