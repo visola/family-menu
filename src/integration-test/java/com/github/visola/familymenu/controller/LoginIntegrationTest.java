@@ -27,7 +27,7 @@ public class LoginIntegrationTest extends AbstractIntegrationTest {
         webDriver.findElement(By.xpath("//input[2]")).sendKeys(password);
         webDriver.findElement(By.cssSelector("button")).click();
 
-        waitUntil(d -> d.findElement(By.xpath("//p[contains(text(), 'Hello World!')]")));
+        waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), 'You have')]")));
     }
 
     @Test
