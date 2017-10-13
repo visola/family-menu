@@ -19,7 +19,7 @@ public class CustomExceptionHandler {
         return mv;
     }
 
-    @ExceptionHandler({BadRequestException.class, PSQLException.class})
+    @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }

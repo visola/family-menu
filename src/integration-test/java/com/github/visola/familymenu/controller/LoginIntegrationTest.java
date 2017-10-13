@@ -52,6 +52,7 @@ public class LoginIntegrationTest extends AbstractIntegrationTest {
     private Family createFamily(String name, String password) {
         Family family = new Family();
         family.setName(name);
+        family.setEmail(name + "@" + name + ".com");
         family.setPassword(password);
 
         return familyController.createFamily(family);
