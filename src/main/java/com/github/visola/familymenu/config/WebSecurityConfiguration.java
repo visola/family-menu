@@ -37,7 +37,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
           // Authenticate endpoint can be access by anyone
           .antMatchers(baseApiPath + "/login").anonymous()
-          .mvcMatchers(HttpMethod.POST, baseApiPath + "/family").anonymous()
+          .mvcMatchers(HttpMethod.POST, baseApiPath + "/families").anonymous()
 
           // All Others API calls will be secure
           .antMatchers(baseApiPath + "/**").authenticated();

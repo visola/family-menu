@@ -14,7 +14,7 @@ import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
 
 @RestController
-@RequestMapping("${api.base.path}/family")
+@RequestMapping("${api.base.path}/families")
 public class FamilyController {
 
     private final FamilyRepository familyRepository;
@@ -31,7 +31,7 @@ public class FamilyController {
         if (family.getId() == null) {
             Family loaded = familyRepository.findByName(family.getName());
             if (loaded != null) {
-                throw new BadRequestException("Family already exist.");
+                throw new BadRequestException("Family name already taken.");
             }
 
             family.setPassword(passwordEncoder.encode(family.getPassword()));

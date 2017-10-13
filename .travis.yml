@@ -1,14 +1,32 @@
 language: java
+dist: trusty
 sudo: required
 
 jdk:
   - oraclejdk8
 
+addons:
+  chrome: stable
+
+services:
+  - postgresql
+
 before_install:
+  - sudo apt-get update
+
+  # Setup Google Chrome Webdriver
+  - export CURRENT_DIR=$(pwd)
+  - export WEBDRIVER_PATH=$CURRENT_DIR/bin/chromedriver
+  - mkdir bin
+  - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -O bin/chromedriver.zip
+  - unzip -d bin bin/chromedriver.zip
+
+  # Setup Codacy Executable
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+  - psql -c 'create database family_menu;' -U postgres
 
-script: ./gradlew --parallel clean check jacocoTestReport
+script: ./gradlew --info --parallel check jacocoTestReport jacocoIntegrationTestCoverageReport
 
 after_success:
-  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
+  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml -r build/reports/jacoco/jacocoIntegrationTestCoverageReport/jacocoIntegrationTestCoverageReport.xml
