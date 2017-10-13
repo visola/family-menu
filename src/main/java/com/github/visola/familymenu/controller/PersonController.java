@@ -1,5 +1,7 @@
 package com.github.visola.familymenu.controller;
 
+import java.util.Objects;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.model.Person;
 import com.github.visola.familymenu.repository.FamilyRepository;
 import com.github.visola.familymenu.repository.PersonRepository;
-import com.google.common.base.Objects;
 
 @RestController
 @RequestMapping("${api.base.path}/people")
@@ -43,7 +44,7 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST)
     public Person createPerson(@RequestBody @Valid Person person, @AuthenticationPrincipal String familyName) {
         Family loadedFamily = familyRepository.findByName(familyName);
-        if (!Objects.equal(person.getFamily().getId(), loadedFamily.getId())) {
+        if (!Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
             throw new NotAuthorizedException("You don't have permission to add a person to that family.");
         }
 
