@@ -1,5 +1,8 @@
 import {
   CHECK_LOGGED_IN,
+  CREATE_FAMILY_REQUESTED,
+  CREATE_FAMILY_SUCCSSFUL,
+  CREATE_FAMILY_FAILED,
   LOGIN_REQUESTED,
   LOGIN_SUCCSSFUL,
   LOGIN_FAILED,
@@ -25,10 +28,26 @@ function logUserIn(token) {
   return loggedInUser(token);
 }
 
-export function security(state = { loggingIn: false, loggedIn: false, family: null }, action) {
+const defaultState = {
+  creating: false,
+  loggingIn: false,
+  loggedIn: false,
+  family: null,
+};
+
+export function security(state = defaultState, action) {
   switch (action.type) {
     case CHECK_LOGGED_IN:
       return Object.assign({}, state, checkLoggedIn(state));
+
+    case CREATE_FAMILY_REQUESTED:
+      return Object.assign({}, state, { creating: true });
+
+    case CREATE_FAMILY_SUCCSSFUL:
+      return Object.assign({}, state, { creating: false, family: action.family });
+
+    case CREATE_FAMILY_FAILED:
+      return Object.assign({}, state, { creating: false, createError: action.message });
 
     case LOGIN_REQUESTED:
       return Object.assign({}, state, { loggingIn: true });

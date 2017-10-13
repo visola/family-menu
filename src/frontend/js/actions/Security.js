@@ -2,12 +2,38 @@ import axios from 'axios';
 
 export const CHECK_LOGGED_IN = 'CHECK_LOGGED_IN';
 
+export const CREATE_FAMILY_REQUESTED = 'CREATE_FAMILY_REQUESTED';
+export const CREATE_FAMILY_SUCCSSFUL = 'CREATE_FAMILY_SUCCSSFUL';
+export const CREATE_FAMILY_FAILED = 'CREATE_FAMILY_FAILED';
+
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
 export const LOGIN_SUCCSSFUL = 'LOGIN_SUCCSSFUL';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
 export function checkLoggedIn() {
   return { type: CHECK_LOGGED_IN };
+}
+
+export function create(family) {
+  return (dispatch) => {
+    dispatch({ type: CREATE_FAMILY_REQUESTED, ...family });
+
+    return axios.post('/api/v1/families', family)
+      .then(() => {
+        dispatch({ type: CREATE_FAMILY_SUCCSSFUL, family });
+        dispatch(login(family));
+      })
+      .catch((error) => {
+        let message = 'Sorry, an error occured while trying to create your family.';
+        if (error.response
+          && error.response.status === 400
+          && error.response.data
+          && error.response.data.error === true) {
+          ({ message } = error.response.data);
+        }
+        dispatch({ type: CREATE_FAMILY_FAILED, message });
+      });
+  };
 }
 
 export function login(loginRequest) {
