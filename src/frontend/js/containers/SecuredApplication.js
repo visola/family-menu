@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Application from '../components/Application';
-import Login from '../containers/Login';
+import LoginPage from '../containers/LoginPage';
 
 const mapStateToProps = (state) => ({ loggedIn: state.security.loggedIn });
 
@@ -12,7 +12,7 @@ class SecuredApplicationComponent extends React.Component {
     if (this.props.loggedIn === true) {
       return <Application />;
     }
-    return <Login />;
+    return <LoginPage />;
   }
 }
 

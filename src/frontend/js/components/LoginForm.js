@@ -2,14 +2,12 @@ import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 
-import { login } from '../actions/Security';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', password: '' };
+    this.state = { name: '', password: '', confirmPassword: '' };
   }
 
   onChange(e, field) {
@@ -57,17 +55,4 @@ Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggingError: state.security.loggingError,
-    loggingIn: state.security.loggingIn,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSubmit: (input) => dispatch(login(input)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
