@@ -217,6 +217,9 @@ task cleanNpm (type: Delete) {
   delete 'node_modules'
 }
 
+// For Heroku build
+task stage (dependsOn: [assemble])
+
 clean.dependsOn cleanNpm
 check.dependsOn frontendLint
 check.dependsOn integrationTest
