@@ -7,7 +7,12 @@ import React from 'react';
 class CreateFamilyForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', password: '', confirmPassword: '' };
+    this.state = {
+      name: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+    };
   }
 
   onChange(e, field) {
@@ -21,23 +26,30 @@ class CreateFamilyForm extends React.Component {
 
   render() {
     const canSubmit = this.state.name.length > 3
+      && this.state.email.length > 5
       && this.state.password.length > 2
       && this.state.confirmPassword.length > 2;
     return <form className="create" onSubmit={this.onSubmit.bind(this)}>
       <FormControl
-        disabled={this.props.loggingIn}
+        disabled={this.props.creating}
         type="text"
         onChange={e => this.onChange(e, 'name')}
         placeholder="Family Name"
         value={this.state.name} />
       <FormControl
-        disabled={this.props.loggingIn}
+        disabled={this.props.creating}
+        type="email"
+        onChange={e => this.onChange(e, 'email')}
+        placeholder="Email Address"
+        value={this.state.email} />
+      <FormControl
+        disabled={this.props.creating}
         type="password"
         onChange={e => this.onChange(e, 'password')}
         placeholder="Password"
         value={this.state.password} />
         <FormControl
-          disabled={this.props.loggingIn}
+          disabled={this.props.creating}
           type="password"
           onChange={e => this.onChange(e, 'confirmPassword')}
           placeholder="Confirm Password"

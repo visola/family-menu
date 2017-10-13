@@ -26,7 +26,7 @@ class Login extends React.Component {
         disabled={this.props.loggingIn}
         type="text"
         onChange={e => this.onChange(e, 'name')}
-        placeholder="Family Name"
+        placeholder="Family Name or Email"
         value={this.state.name} />
       <FormControl
         disabled={this.props.loggingIn}

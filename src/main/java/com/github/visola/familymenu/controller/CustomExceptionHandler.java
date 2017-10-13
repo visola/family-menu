@@ -19,9 +19,8 @@ public class CustomExceptionHandler {
         return mv;
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
+    @ExceptionHandler({BadRequestException.class, PSQLException.class})
+    public ResponseEntity<ErrorResponse> handleBadRequest(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 

@@ -28,7 +28,14 @@ function logUserIn(token) {
   return loggedInUser(token);
 }
 
-export function security(state = { creating: false, loggingIn: false, loggedIn: false, family: null }, action) {
+const defaultState = {
+  creating: false,
+  loggingIn: false,
+  loggedIn: false,
+  family: null,
+};
+
+export function security(state = defaultState, action) {
   switch (action.type) {
     case CHECK_LOGGED_IN:
       return Object.assign({}, state, checkLoggedIn(state));
@@ -38,6 +45,9 @@ export function security(state = { creating: false, loggingIn: false, loggedIn: 
 
     case CREATE_FAMILY_SUCCSSFUL:
       return Object.assign({}, state, { creating: false, family: action.family });
+
+    case CREATE_FAMILY_FAILED:
+      return Object.assign({}, state, { creating: false, createError: action.message });
 
     case LOGIN_REQUESTED:
       return Object.assign({}, state, { loggingIn: true });

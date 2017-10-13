@@ -17,11 +17,14 @@ public class Family implements Serializable {
     @Id
     private Integer id;
     @NotNull
-    @Size(min=2, max=255)
+    @Size(min = 2, max = 255)
     private String name;
     @NotNull
-    @Size(min=2)
+    @Size(min = 2)
     private String password;
+    @NotNull
+    @Size(min = 5)
+    private String email;
 
     public Integer getId() {
         return id;
@@ -45,6 +48,14 @@ public class Family implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

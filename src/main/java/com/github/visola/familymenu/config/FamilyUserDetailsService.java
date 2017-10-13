@@ -21,10 +21,13 @@ public class FamilyUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Family family = familyRepository.findByName(username);
+    public UserDetails loadUserByUsername(String emailOrFamilyName) throws UsernameNotFoundException {
+        Family family = familyRepository.findByEmail(emailOrFamilyName);
         if (family == null) {
-            throw new UsernameNotFoundException("Family with name " + username + " doesn't exist.");
+            family = familyRepository.findByName(emailOrFamilyName);
+        }
+        if (family == null) {
+            throw new UsernameNotFoundException("Family with name " + emailOrFamilyName + " doesn't exist.");
         }
         return new FamilyUserDetailsWrapper(family);
     }

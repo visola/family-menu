@@ -2,8 +2,8 @@ package com.github.visola.familymenu.controller;
 
 public class ErrorResponse {
 
-    private final String message;
     private final Boolean error = true;
+    private final String message;
 
     public ErrorResponse(String message) {
         this.message = message;

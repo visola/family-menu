@@ -19,12 +19,19 @@ export function create(family) {
     dispatch({ type: CREATE_FAMILY_REQUESTED, ...family });
 
     return axios.post('/api/v1/families', family)
-      .then((response) => {
-        dispatch({ type: CREATE_FAMILY_SUCCSSFUL, family: family });
+      .then(() => {
+        dispatch({ type: CREATE_FAMILY_SUCCSSFUL, family });
         dispatch(login(family));
       })
       .catch((error) => {
-        dispatch({ type: CREATE_FAMILY_FAILED, error });
+        let message = 'Sorry, an error occured while trying to create your family.';
+        if (error.response
+          && error.response.status === 400
+          && error.response.data
+          && error.response.data.error === true) {
+          ({ message } = error.response.data);
+        }
+        dispatch({ type: CREATE_FAMILY_FAILED, message });
       });
   };
 }
