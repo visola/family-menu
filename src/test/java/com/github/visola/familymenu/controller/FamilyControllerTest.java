@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.github.visola.familymenu.controller.exception.BadRequestException;
+import com.github.visola.familymenu.controller.exception.ResourceNotFoundException;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
 import com.jcabi.matchers.RegexMatchers;

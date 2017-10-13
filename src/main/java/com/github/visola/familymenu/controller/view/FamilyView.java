@@ -1,4 +1,4 @@
-package com.github.visola.familymenu.controller;
+package com.github.visola.familymenu.controller.view;
 
 import com.github.visola.familymenu.model.Family;
 

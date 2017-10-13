@@ -1,4 +1,4 @@
-package com.github.visola.familymenu.controller;
+package com.github.visola.familymenu.controller.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 
