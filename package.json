@@ -5,6 +5,7 @@
     "bundle": "webpack --env development",
     "bundleProd": "webpack --env production -p",
     "lint": "eslint webpack.config.js index.js src/frontend",
+    "lint-fix": "eslint --fix webpack.config.js index.js src/frontend",
     "watch": "webpack --env development --progress --colors --watch"
   },
   "devDependencies": {
