@@ -16,7 +16,7 @@ before_install:
 
   # Setup Google Chrome Webdriver
   - export CURRENT_DIR=$(pwd)
-  - export WEBDRIVER_PATH=$CURRENT_DIR/bin/google-chrome
+  - export WEBDRIVER_PATH=$CURRENT_DIR/bin/chromedriver
   - mkdir bin
   - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -O bin/chromedriver.zip
   - unzip -d bin bin/chromedriver.zip
