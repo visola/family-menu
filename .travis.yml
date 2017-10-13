@@ -8,6 +8,13 @@ services:
   - postgresql
 
 before_install:
+  - sudo apt-get update
+
+  # Setup to be able to run Chrome in Travis
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sudo apt-get install -y libappindicator1 fonts-liberation
+
   # Setup Google Chrome
   - export WEBDRIVER_PATH=/usr/bin/google-chrome
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -17,7 +24,6 @@ before_install:
   - mkdir bin
   - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -O bin/chromedriver.zip
   - unzip -d bin bin/chromedriver.zip
-  - chmod +x bin/chromedriver
 
   # Setup Codacy Executable
   - sudo apt-get install jq
