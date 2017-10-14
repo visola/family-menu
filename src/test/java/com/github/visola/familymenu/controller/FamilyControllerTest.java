@@ -1,6 +1,6 @@
 package com.github.visola.familymenu.controller;
 
-import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.github.visola.familymenu.controller.exception.BadRequestException;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
-import com.jcabi.matchers.RegexMatchers;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FamilyControllerTest {
@@ -66,7 +65,7 @@ public class FamilyControllerTest {
         Mockito.when(familyRepository.save(family)).thenReturn(family);
 
         Family createdFamily = familyController.createFamily(family);
-        MatcherAssert.assertThat("Should return hidden password", createdFamily.getPassword(), RegexMatchers.matchesPattern("\\*+"));
+        Assert.assertEquals("Should return encoded password", encodedPassword, createdFamily.getPassword());
 
         Mockito.verify(passwordEncoder, Mockito.atLeastOnce()).encode(originalPassword);
     }
