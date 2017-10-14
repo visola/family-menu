@@ -58,6 +58,16 @@ public class LoginIntegrationTest extends AbstractIntegrationTest {
         waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), 'Wrong family name/password combination.')]")));
     }
 
+    @Test
+    public void failedToLoginWithWrongFamily() {
+        goToLoginPage();
+        webDriver.findElement(By.xpath("//input[1]")).sendKeys("someFamilyThatDoesNotExist");
+        webDriver.findElement(By.xpath("//input[2]")).sendKeys("NotARealPassword");
+        webDriver.findElement(By.cssSelector("button")).click();
+
+        waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), 'Wrong family name/password combination.')]")));
+    }
+
     private void goToLoginPage() {
         webDriver.navigate().to("http://localhost:8080");
         waitUntil(d -> d.findElement(By.id("container")));
