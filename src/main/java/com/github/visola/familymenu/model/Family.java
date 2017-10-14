@@ -8,7 +8,11 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.visola.familymenu.controller.FamilySerializer;
+
 @Entity
+@JsonSerialize(using = FamilySerializer.class)
 public class Family implements Serializable {
 
     private static final long serialVersionUID = 1L;

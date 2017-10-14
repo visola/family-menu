@@ -1,7 +1,6 @@
 package com.github.visola.familymenu.controller;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.github.visola.familymenu.controller.exception.BadRequestException;
-import com.github.visola.familymenu.controller.exception.ResourceNotFoundException;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
 import com.jcabi.matchers.RegexMatchers;
@@ -30,21 +28,6 @@ public class FamilyControllerTest {
     @Before
     public void setUp() {
         familyController = new FamilyController(familyRepository, passwordEncoder);
-    }
-
-    @Test
-    public void doesNotExposeFamilyPassword() {
-        Family mockFamily = setupFamilyRepositoryWithOneFamily();
-
-        Family family = familyController.getFamily(1);
-        Assert.assertEquals("Should match ID correctly", mockFamily.getId(), family.getId());
-        Assert.assertEquals("Should match name correctly", mockFamily.getName(), family.getName());
-        MatcherAssert.assertThat(family.getPassword(), RegexMatchers.matchesPattern("\\*+"));
-    }
-
-    @Test(expected=ResourceNotFoundException.class)
-    public void throwsIfFamilyNotFound() {
-        familyController.getFamily(1);
     }
 
     @Test(expected=BadRequestException.class)

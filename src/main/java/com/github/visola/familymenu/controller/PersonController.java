@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.visola.familymenu.controller.exception.NotAuthorizedException;
-import com.github.visola.familymenu.controller.view.PersonView;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.model.Person;
 import com.github.visola.familymenu.repository.FamilyRepository;
@@ -44,13 +43,12 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST)
     public Person createPerson(@RequestBody @Valid Person person, @AuthenticationPrincipal String familyName) {
         Family loadedFamily = familyRepository.findByName(familyName);
-        if (!Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
+        if (loadedFamily == null || !Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
             throw new NotAuthorizedException("You don't have permission to add a person to that family.");
         }
 
         person.setFamily(loadedFamily);
-        return new PersonView(personRepository.save(person));
-        
+        return personRepository.save(person);
     }
 
 }

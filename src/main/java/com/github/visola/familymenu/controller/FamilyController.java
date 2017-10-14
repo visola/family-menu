@@ -4,15 +4,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.visola.familymenu.controller.exception.BadRequestException;
-import com.github.visola.familymenu.controller.exception.ResourceNotFoundException;
-import com.github.visola.familymenu.controller.view.FamilyView;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
 
@@ -38,18 +35,9 @@ public class FamilyController {
             }
 
             family.setPassword(passwordEncoder.encode(family.getPassword()));
-            return new FamilyView(familyRepository.save(family));
+            return familyRepository.save(family);
         }
         throw new BadRequestException("Not suppose to update family throw this endpoint.");
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public Family getFamily(@PathVariable Integer id) {
-        Family loadedFamily = familyRepository.findOne(id);
-        if (loadedFamily == null) {
-            throw new ResourceNotFoundException("Family with ID " + id + " does not exist.");
-        }
-        return new FamilyView(loadedFamily);
     }
 
 }
