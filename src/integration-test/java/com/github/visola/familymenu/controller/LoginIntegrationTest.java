@@ -17,13 +17,27 @@ public class LoginIntegrationTest extends AbstractIntegrationTest {
     private WebDriver webDriver;
 
     @Test
-    public void userCanLoginWithExistingFamily() {
+    public void userCanLoginWithExistingFamilyUsing() {
         String name = "test";
         String password = "password";
         createFamily(name, password);
 
         goToLoginPage();
         webDriver.findElement(By.xpath("//input[1]")).sendKeys(name);
+        webDriver.findElement(By.xpath("//input[2]")).sendKeys(password);
+        webDriver.findElement(By.cssSelector("button")).click();
+
+        waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), 'You have')]")));
+    }
+
+    @Test
+    public void userCanLoginWithExistingFamilyUsingEmail() {
+        String name = "test";
+        String password = "password";
+        Family family = createFamily(name, password);
+
+        goToLoginPage();
+        webDriver.findElement(By.xpath("//input[1]")).sendKeys(family.getEmail());
         webDriver.findElement(By.xpath("//input[2]")).sendKeys(password);
         webDriver.findElement(By.cssSelector("button")).click();
 
