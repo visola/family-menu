@@ -8,6 +8,6 @@ import com.github.visola.familymenu.model.Person;
 
 public interface PersonRepository extends PagingAndSortingRepository<Person, Integer> {
 
-    Page<Person> findByFamilyName(Pageable pageRequest, String familyName);
+    Page<Person> findByFamilyNameOrderByName(Pageable pageRequest, String familyName);
 
 }

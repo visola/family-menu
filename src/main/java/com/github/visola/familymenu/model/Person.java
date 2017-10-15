@@ -16,7 +16,6 @@ public class Person {
     @NotNull
     @Size(min = 2, max = 255)
     private String name;
-    @Size(min = 5)
     private String email;
     @ManyToOne
     private Family family;

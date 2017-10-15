@@ -37,14 +37,16 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET)
     public Page<Person> getPeople(@RequestParam(defaultValue="0", name="page") Integer page, @AuthenticationPrincipal String familyName) {
         PageRequest request = new PageRequest(page, 25);
-        return personRepository.findByFamilyName(request, familyName);
+        return personRepository.findByFamilyNameOrderByName(request, familyName);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public Person createPerson(@RequestBody @Valid Person person, @AuthenticationPrincipal String familyName) {
         Family loadedFamily = familyRepository.findByName(familyName);
-        if (loadedFamily == null || !Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
-            throw new NotAuthorizedException("You don't have permission to add a person to that family.");
+        if (person.getFamily() != null) {
+            if (loadedFamily == null || !Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
+                throw new NotAuthorizedException("You don't have permission to add a person to that family.");
+            }
         }
 
         person.setFamily(loadedFamily);
