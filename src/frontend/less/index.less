@@ -2,12 +2,39 @@ body {
   background: white;
 }
 
+form > * {
+  margin: 0 0 10px
+}
+
 .login-page {
   margin: 50px auto;
   text-align: center;
   width: 400px;
+}
 
-  > form > * {
-      margin: 0 0 10px
+.modal {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.page-not-found {
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.people {
+  margin-left: 20px;
+  position: relative;
+
+  > .status {
+    > span {
+      display: inline-block;
+      padding-left: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  > .people-list {
+    position: absolute;
   }
 }

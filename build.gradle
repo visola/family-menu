@@ -29,7 +29,6 @@ dependencies {
     exclude group: "net.minidev", module: "json-smart"
   }
 
-  testCompile("com.jcabi:jcabi-matchers:1.4")
   testCompile("junit:junit")
   testCompile("org.hamcrest:hamcrest-core")
   testCompile("org.mockito:mockito-core")
@@ -101,7 +100,7 @@ task frontendLint (type: NpmTask) {
 def jacocoDir = "${buildDir}/jacoco"
 def jacocoVersion = "0.7.9"
 def jacocoZip = "${jacocoDir}/jacoco-${jacocoVersion}.zip"
-def jacocoITOutput = "${buildDir}/it-jacoco.exec"
+def jacocoITOutput = "${buildDir}/jacoco/integration-test.exec"
 
 task createJacocoDirectory {
   doLast {
@@ -152,7 +151,7 @@ task stopApplication {
       .findAll { it.endsWith("${project.name}.jar") }
       .each {
         def pid = it.split("\\s")[1]
-        logger.debug('PID found: ' + pid)
+        logger.info('PID found: ' + pid)
         "kill ${pid}".execute()
       }
   }
@@ -215,6 +214,26 @@ task integrationTest(type: Test) {
 
 task cleanNpm (type: Delete) {
   delete 'node_modules'
+}
+
+def mergedJacocoOutput = file("${buildDir}/jacocoMerged.exec")
+
+task mergeCoverageReport(type: JacocoMerge) {
+  destinationFile = mergedJacocoOutput
+  executionData = files(jacocoITOutput, "${buildDir}/jacoco/test.exec")
+}
+
+task jacocoMergedCoverageReport(type: JacocoReport) {
+  description = "Generate coverage reports for all tests"
+  group = "Verification"
+  dependsOn mergeCoverageReport
+
+  sourceSets sourceSets.main
+  executionData mergedJacocoOutput
+  reports {
+      html.enabled true
+      xml.enabled true
+  }
 }
 
 // For Heroku build

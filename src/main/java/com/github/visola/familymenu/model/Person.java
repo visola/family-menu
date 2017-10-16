@@ -1,21 +1,14 @@
 package com.github.visola.familymenu.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.github.visola.familymenu.controller.FamilySerializer;
-
 @Entity
-@JsonSerialize(using = FamilySerializer.class)
-public class Family implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Person {
 
     @GeneratedValue
     @Id
@@ -23,12 +16,9 @@ public class Family implements Serializable {
     @NotNull
     @Size(min = 2, max = 255)
     private String name;
-    @NotNull
-    @Size(min = 2)
-    private String password;
-    @NotNull
-    @Size(min = 5)
     private String email;
+    @ManyToOne
+    private Family family;
 
     public Integer getId() {
         return id;
@@ -42,14 +32,6 @@ public class Family implements Serializable {
         return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -60,6 +42,14 @@ public class Family implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
     }
 
 }

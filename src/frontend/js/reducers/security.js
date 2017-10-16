@@ -1,10 +1,12 @@
+import axios from 'axios';
+
 import {
   CHECK_LOGGED_IN,
   CREATE_FAMILY_REQUESTED,
-  CREATE_FAMILY_SUCCSSFUL,
+  CREATE_FAMILY_SUCCESSFUL,
   CREATE_FAMILY_FAILED,
   LOGIN_REQUESTED,
-  LOGIN_SUCCSSFUL,
+  LOGIN_SUCCESSFUL,
   LOGIN_FAILED,
 } from '../actions/Security';
 
@@ -13,6 +15,7 @@ function checkLoggedIn() {
   if (token == null) {
     return { loggedIn: false, family: null };
   }
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   return loggedInUser(token);
 }
 
@@ -43,7 +46,7 @@ export function security(state = defaultState, action) {
     case CREATE_FAMILY_REQUESTED:
       return Object.assign({}, state, { creating: true });
 
-    case CREATE_FAMILY_SUCCSSFUL:
+    case CREATE_FAMILY_SUCCESSFUL:
       return Object.assign({}, state, { creating: false, family: action.family });
 
     case CREATE_FAMILY_FAILED:
@@ -52,7 +55,7 @@ export function security(state = defaultState, action) {
     case LOGIN_REQUESTED:
       return Object.assign({}, state, { loggingIn: true });
 
-    case LOGIN_SUCCSSFUL:
+    case LOGIN_SUCCESSFUL:
       return Object.assign({}, state, { loggingIn: false, ...logUserIn(action.token) });
 
     case LOGIN_FAILED:

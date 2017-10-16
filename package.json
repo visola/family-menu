@@ -5,6 +5,7 @@
     "bundle": "webpack --env development",
     "bundleProd": "webpack --env production -p",
     "lint": "eslint webpack.config.js index.js src/frontend",
+    "lint-fix": "eslint --fix webpack.config.js index.js src/frontend",
     "watch": "webpack --env development --progress --colors --watch"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
+    "react-bytesize-icons": "^0.8.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",

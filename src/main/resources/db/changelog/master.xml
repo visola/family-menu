@@ -23,4 +23,19 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="add person table" author="visola">
+        <createTable tableName="person">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="varchar(1024)" />
+            <column name="family_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

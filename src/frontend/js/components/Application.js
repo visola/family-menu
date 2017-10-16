@@ -3,13 +3,18 @@ import React from 'react';
 import {
   BrowserRouter,
   Route,
+  Switch,
 } from 'react-router-dom';
+
+import Home from './Home';
+import PageNotFound from './PageNotFound';
 
 const Application = () => (
   <BrowserRouter>
-      <Route exact path="/">
-        <p>Hello World!</p>
-      </Route>
+      <Switch>
+        <Route exact={true} path='/' component={Home} />
+        <Route component={PageNotFound} />
+      </Switch>
   </BrowserRouter>
 );
 

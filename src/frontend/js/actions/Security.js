@@ -3,11 +3,11 @@ import axios from 'axios';
 export const CHECK_LOGGED_IN = 'CHECK_LOGGED_IN';
 
 export const CREATE_FAMILY_REQUESTED = 'CREATE_FAMILY_REQUESTED';
-export const CREATE_FAMILY_SUCCSSFUL = 'CREATE_FAMILY_SUCCSSFUL';
+export const CREATE_FAMILY_SUCCESSFUL = 'CREATE_FAMILY_SUCCESSFUL';
 export const CREATE_FAMILY_FAILED = 'CREATE_FAMILY_FAILED';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
-export const LOGIN_SUCCSSFUL = 'LOGIN_SUCCSSFUL';
+export const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
 export function checkLoggedIn() {
@@ -20,7 +20,7 @@ export function create(family) {
 
     return axios.post('/api/v1/families', family)
       .then(() => {
-        dispatch({ type: CREATE_FAMILY_SUCCSSFUL, family });
+        dispatch({ type: CREATE_FAMILY_SUCCESSFUL, family });
         dispatch(login(family));
       })
       .catch((error) => {
@@ -42,7 +42,7 @@ export function login(loginRequest) {
 
     return axios.post('/api/v1/login', loginRequest)
       .then((response) => {
-        dispatch({ type: LOGIN_SUCCSSFUL, token: response.data.token });
+        dispatch({ type: LOGIN_SUCCESSFUL, token: response.data.token });
         dispatch(checkLoggedIn());
       })
       .catch((error) => {
