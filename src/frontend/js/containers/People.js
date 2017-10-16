@@ -36,6 +36,10 @@ class People extends React.Component {
       email: this.state.personEmail,
       name: this.state.personName,
     });
+    this.setState({
+      personEmail: '',
+      personName: '',
+    });
   }
 
   onCancelOrCloseAddPerson(e) {

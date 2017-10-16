@@ -43,10 +43,8 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST)
     public Person createPerson(@RequestBody @Valid Person person, @AuthenticationPrincipal String familyName) {
         Family loadedFamily = familyRepository.findByName(familyName);
-        if (person.getFamily() != null) {
-            if (loadedFamily == null || !Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
-                throw new NotAuthorizedException("You don't have permission to add a person to that family.");
-            }
+        if (person.getFamily() != null && !Objects.equals(person.getFamily().getId(), loadedFamily.getId())) {
+            throw new NotAuthorizedException("You don't have permission to add a person to that family.");
         }
 
         person.setFamily(loadedFamily);
