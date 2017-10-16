@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class PersonList extends React.Component {
   render() {
-    return <ul className="person-list">{this.renderPeople()}</ul>;
+    return <ul>{this.renderPeople()}</ul>;
   }
 
   renderPeople() {
