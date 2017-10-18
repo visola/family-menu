@@ -1,13 +1,13 @@
 import React from 'react';
 
-import MealsTable from '../containers/MealsTable';
+import Meals from '../containers/Meals';
 import People from '../containers/People';
 
 class Home extends React.Component {
   render() {
     return <div>
       <People />
-      <MealsTable />
+      <Meals />
     </div>;
   }
 }

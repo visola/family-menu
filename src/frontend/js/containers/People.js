@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { CaretBottom, CaretTop } from 'react-bytesize-icons';
 
-import { createPerson, loadPeople } from '../actions/People';
+import { createPerson } from '../actions/People';
 import Modal from '../components/Modal';
 import PersonList from '../components/PersonList';
 
@@ -18,10 +18,6 @@ class People extends React.Component {
       showAddModal: false,
       showList: false,
     };
-  }
-
-  componentDidMount() {
-    this.props.loadPeople();
   }
 
   onAddPersonClick(e) {
@@ -39,6 +35,7 @@ class People extends React.Component {
     this.setState({
       personEmail: '',
       personName: '',
+      showList: false,
     });
   }
 
@@ -115,7 +112,6 @@ class People extends React.Component {
 
 People.propTypes = {
   createPerson: PropTypes.func.isRequired,
-  loadPeople: PropTypes.func.isRequired,
   people: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,
@@ -131,7 +127,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createPerson: (person) => dispatch(createPerson(person)),
-    loadPeople: () => dispatch(loadPeople()),
   };
 };
 

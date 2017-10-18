@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import { loadMeals } from '../actions/Meals';
+import { loadPeople } from '../actions/People';
+
+
 export const CHECK_LOGGED_IN = 'CHECK_LOGGED_IN';
 
 export const CREATE_FAMILY_REQUESTED = 'CREATE_FAMILY_REQUESTED';
@@ -44,6 +48,8 @@ export function login(loginRequest) {
       .then((response) => {
         dispatch({ type: LOGIN_SUCCESSFUL, token: response.data.token });
         dispatch(checkLoggedIn());
+        dispatch(loadPeople());
+        dispatch(loadMeals());
       })
       .catch((error) => {
         if (error.response
