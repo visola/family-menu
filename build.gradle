@@ -147,11 +147,19 @@ task stopApplication {
     def proc = "ps -le".execute()
 
     def text = proc.text
-    text.split("\n")
-      .findAll { it.endsWith("${project.name}.jar") }
-      .each {
-        logger.info(it)
-        def pid = it.split("\\s+")[2]
+    def lines = text.split("\n")
+    def firstLine = lines[0].trim().split("\\s+")
+
+    def pidColumn = firstLine.findIndexOf { it == 'PID' }
+    logger.info("PID Column is: ${pidColumn}")
+
+    def filtered = lines.findAll { it.endsWith("${project.name}.jar") }
+
+    logger.info("Found ${filtered.size} processes to kill")
+    filtered.each {
+        def processLine = it.trim().split("\\s+")
+        logger.info("${processLine}")
+        def pid = processLine[pidColumn]
         logger.info('PID found: ' + pid)
         "kill ${pid}".execute()
       }
