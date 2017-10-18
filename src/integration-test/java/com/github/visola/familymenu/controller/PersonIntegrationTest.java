@@ -36,7 +36,7 @@ public class PersonIntegrationTest extends AbstractIntegrationTest {
 
         peopleControls.findElement(By.xpath("//button[contains(text(),'Save')]")).click();
 
-        waitUntil(d -> d.findElement(By.xpath("//li[contains(text(), '"+personName+"')]")));
+        waitUntil(d -> d.findElement(By.xpath("//*[contains(text(), '"+personName+"')]")));
     }
 
     private void createFamilyAndLogin() {

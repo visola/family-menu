@@ -37,5 +37,34 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="add meal table and initial values" author="visola">
+    		<createTable tableName="meal">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="family_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+        <sql>
+        		INSERT INTO meal (id, name, position, family_id)
+        			SELECT nextval('hibernate_sequence'), 'Lunch', 1, f.id
+        			FROM family f
+        </sql>
+        
+        <sql>
+        		INSERT INTO meal (id, name, position, family_id)
+        			SELECT nextval('hibernate_sequence'), 'Dinner', 2, f.id
+        			FROM family f
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

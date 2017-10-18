@@ -150,7 +150,8 @@ task stopApplication {
     text.split("\n")
       .findAll { it.endsWith("${project.name}.jar") }
       .each {
-        def pid = it.split("\\s")[1]
+        logger.info(it)
+        def pid = it.split("\\s+")[2]
         logger.info('PID found: ' + pid)
         "kill ${pid}".execute()
       }
