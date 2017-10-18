@@ -26,7 +26,7 @@ class MealsTable extends React.Component {
 
   renderDays(days) {
     return <tr>
-      <td key={-1}>&nbsp;</td>
+      <th key={-1}>&nbsp;</th>
       {days.map((day) => <th key={day}>{day.format('ddd (MM/DD)')}</th>)}
     </tr>;
   }

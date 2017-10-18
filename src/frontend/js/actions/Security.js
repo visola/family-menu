@@ -15,7 +15,11 @@ export const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
 export function checkLoggedIn() {
-  return { type: CHECK_LOGGED_IN };
+  return (dispatch) => {
+    dispatch({ type: CHECK_LOGGED_IN });
+    dispatch(loadPeople());
+    dispatch(loadMeals());
+  };
 }
 
 export function create(family) {
@@ -48,8 +52,6 @@ export function login(loginRequest) {
       .then((response) => {
         dispatch({ type: LOGIN_SUCCESSFUL, token: response.data.token });
         dispatch(checkLoggedIn());
-        dispatch(loadPeople());
-        dispatch(loadMeals());
       })
       .catch((error) => {
         if (error.response
