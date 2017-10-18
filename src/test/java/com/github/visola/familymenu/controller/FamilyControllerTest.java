@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.github.visola.familymenu.controller.exception.BadRequestException;
 import com.github.visola.familymenu.model.Family;
 import com.github.visola.familymenu.repository.FamilyRepository;
+import com.github.visola.familymenu.repository.MealRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FamilyControllerTest {
@@ -20,13 +21,16 @@ public class FamilyControllerTest {
     private FamilyRepository familyRepository;
 
     @Mock
+    private MealRepository mealRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     private FamilyController familyController;
 
     @Before
     public void setUp() {
-        familyController = new FamilyController(familyRepository, passwordEncoder);
+        familyController = new FamilyController(familyRepository, mealRepository, passwordEncoder);
     }
 
     @Test(expected=BadRequestException.class)
