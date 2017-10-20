@@ -7,6 +7,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * A meal represents a daily meal like <bold>lunch</bold> or <bold>dinner</bold>.
+ */
 @Entity
 public class Meal {
 
