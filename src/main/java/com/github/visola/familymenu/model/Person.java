@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Person {
 
@@ -17,6 +19,7 @@ public class Person {
     @Size(min = 2, max = 255)
     private String name;
     private String email;
+    @JsonIgnore
     @ManyToOne
     private Family family;
 
