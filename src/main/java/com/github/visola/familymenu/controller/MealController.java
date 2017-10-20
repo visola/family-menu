@@ -15,15 +15,15 @@ import com.github.visola.familymenu.repository.MealRepository;
 @RestController
 @RequestMapping("${api.base.path}/meals")
 public class MealController {
-	
-	private final MealRepository mealRepository;
-	
-	@Autowired
-	public MealController(MealRepository mealRepository) {
-		this.mealRepository = mealRepository;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET)
+
+    private final MealRepository mealRepository;
+
+    @Autowired
+    public MealController(MealRepository mealRepository) {
+        this.mealRepository = mealRepository;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
     public Page<Meal> getPeople(@RequestParam(defaultValue="0", name="page") Integer page, @AuthenticationPrincipal String familyName) {
         PageRequest request = new PageRequest(page, 25);
         return mealRepository.findByFamilyNameOrderByPosition(request, familyName);
