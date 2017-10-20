@@ -37,9 +37,9 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="add meal table and initial values" author="visola">
-    		<createTable tableName="meal">
+        <createTable tableName="meal">
             <column name="id" autoIncrement="true" type="integer">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -53,18 +53,58 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-        
+
         <sql>
-        		INSERT INTO meal (id, name, position, family_id)
-        			SELECT nextval('hibernate_sequence'), 'Lunch', 1, f.id
-        			FROM family f
+            INSERT INTO meal (id, name, position, family_id)
+            SELECT nextval('hibernate_sequence'), 'Lunch', 1, f.id
+            FROM family f
         </sql>
-        
+
         <sql>
-        		INSERT INTO meal (id, name, position, family_id)
-        			SELECT nextval('hibernate_sequence'), 'Dinner', 2, f.id
-        			FROM family f
+            INSERT INTO meal (id, name, position, family_id)
+            SELECT nextval('hibernate_sequence'), 'Dinner', 2, f.id
+            FROM family f
         </sql>
+    </changeSet>
+
+    <changeSet id="add dish" author="visola">
+        <createTable tableName="dish">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="family_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add planned meal" author="visola">
+        <createTable tableName="planned_meal">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="planned_date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="person_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="meal_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="planned_meal_dishes">
+            <column name="planned_meal_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="dishes_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
