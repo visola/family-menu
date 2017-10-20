@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { loadDishes } from '../actions/Dishes';
 import { loadMeals } from '../actions/Meals';
 import { loadPeople } from '../actions/People';
 
@@ -19,6 +20,7 @@ export function checkLoggedIn() {
     dispatch({ type: CHECK_LOGGED_IN });
     dispatch(loadPeople());
     dispatch(loadMeals());
+    dispatch(loadDishes());
   };
 }
 

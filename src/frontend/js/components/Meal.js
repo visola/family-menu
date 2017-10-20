@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import PlannedMeal from '../containers/PlannedMeal';
+
 class Meal extends React.Component {
   render() {
     return <div>
@@ -9,9 +11,10 @@ class Meal extends React.Component {
   }
 
   renderMealForPerson(person) {
-    return <p key={person.id}>
+    return <div key={person.id} className="meal">
       {person.name}
-    </p>;
+      <PlannedMeal day={this.props.day} meal={this.props.meal} person={person} />
+    </div>;
   }
 }
 
