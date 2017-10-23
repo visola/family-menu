@@ -19,12 +19,10 @@ class PlannedMeal extends React.Component {
 
 PlannedMeal.propTypes = {
   day: PropTypes.object.isRequired,
-  dishes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.required,
-      name: PropTypes.string.required,
-    })
-  ).isRequired,
+  dishes: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.required,
+    name: PropTypes.string.required,
+  })).isRequired,
   meal: PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,

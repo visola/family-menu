@@ -17,7 +17,6 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat(DATE_TIME_FORMAT);
 
     @Bean
     public Converter<String, Calendar> calendarConverter() {
@@ -26,7 +25,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
             public Calendar convert(String source) {
                 Calendar result = Calendar.getInstance();
                 try {
-                    result.setTimeInMillis(DATE_TIME_FORMATTER.parse(source).getTime());
+                    SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(DATE_TIME_FORMAT);
+                    result.setTimeInMillis(dateTimeFormatter.parse(source).getTime());
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }

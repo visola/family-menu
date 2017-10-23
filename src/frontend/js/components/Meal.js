@@ -11,7 +11,12 @@ class Meal extends React.Component {
   }
 
   renderMealForPerson(person) {
-    return <PlannedMeal key={person.id} day={this.props.day} meal={this.props.meal} person={person} />;
+    return <PlannedMeal
+      key={person.id}
+      day={this.props.day}
+      meal={this.props.meal}
+      person={person}
+    />;
   }
 }
 
