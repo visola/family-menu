@@ -1,10 +1,14 @@
+import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
 class PlannedMeal extends React.Component {
   render() {
-    return <div></div>;
+    return <div className="meal">
+      {this.props.person.name}
+      <div><Button>Add</Button></div>
+    </div>;
   }
 }
 
