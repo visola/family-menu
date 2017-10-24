@@ -25,6 +25,7 @@ const mapStateToProps = (state) => {
   return {
     meals: state.meals.list,
     people: state.people.list,
+    plannedMeals: state.plannedMeals.list
   };
 };
 

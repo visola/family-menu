@@ -3,6 +3,7 @@ import axios from 'axios';
 import { loadDishes } from '../actions/Dishes';
 import { loadMeals } from '../actions/Meals';
 import { loadPeople } from '../actions/People';
+import { loadPlannedMeals } from '../actions/PlannedMeals';
 
 
 export const CHECK_LOGGED_IN = 'CHECK_LOGGED_IN';
@@ -21,6 +22,7 @@ export function checkLoggedIn() {
     dispatch(loadPeople());
     dispatch(loadMeals());
     dispatch(loadDishes());
+    dispatch(loadPlannedMeals());
   };
 }
 
