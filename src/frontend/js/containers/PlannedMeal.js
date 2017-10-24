@@ -4,6 +4,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Minus, Plus } from 'react-bytesize-icons';
 
+import ListPicker from '../components/ListPicker';
+
 class PlannedMeal extends React.Component {
   constructor(props) {
     super(props);
@@ -12,14 +14,19 @@ class PlannedMeal extends React.Component {
     };
   }
 
-  onAddClick(e) {
+  handleAddDish(dish) {
+    console.log(dish);
+    this.setState({addingDish: false});
+  }
+
+  handleStartAddingDish(e) {
     e.preventDefault();
     this.setState({addingDish: true});
   }
 
   render() {
     return <div className="meal">
-      {this.props.person.name} <Button onClick={this.onAddClick.bind(this)}>
+      {this.props.person.name} <Button className="icon-button" onClick={this.handleStartAddingDish.bind(this)}>
         <Plus height="16" width="16" />
       </Button>
       <ul>
@@ -31,7 +38,13 @@ class PlannedMeal extends React.Component {
 
   renderAddDish() {
     if (this.state.addingDish === true) {
-      return <li><input type="text" /></li>
+      return <li>
+        <ListPicker
+          onCancel={() => this.setState({addingDish: false})}
+          onSelect={this.handleAddDish.bind(this)}
+          values={this.props.dishes}
+        />
+      </li>
     }
     return null;
   }

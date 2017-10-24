@@ -6,7 +6,7 @@ import MealsTable from '../components/MealsTable';
 
 class Meals extends React.Component {
   render() {
-    return <MealsTable meals={this.props.meals} people={this.props.people} />;
+    return <MealsTable meals={this.props.meals} people={this.props.people} plannedMeals={this.props.plannedMeals} />;
   }
 }
 
