@@ -3,7 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import PlannedMeal from '../containers/PlannedMeal';
+import PlannedMeal from './PlannedMeal';
 
 class MealsTable extends React.Component {
   getDays() {

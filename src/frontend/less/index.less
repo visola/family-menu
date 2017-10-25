@@ -2,6 +2,29 @@ body {
   background: white;
 }
 
+.dish-picker {
+  > ul {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #ccc;
+    list-style: none;
+    max-width: 200px;
+    padding: 0 5px;
+
+    li {
+      color: #3f3fd2;
+      text-decoration: underline;
+    }
+
+    li.extra {
+      border-top: 1px solid #ccc;
+    }
+
+    li.selected {
+      background: #ffc;
+    }
+  }
+}
+
 form > * {
   margin: 0 0 10px
 }

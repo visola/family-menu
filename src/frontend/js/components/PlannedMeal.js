@@ -1,10 +1,9 @@
 import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Minus, Plus } from 'react-bytesize-icons';
 
-import ListPicker from '../components/ListPicker';
+import DishPicker from '../containers/DishPicker';
 
 class PlannedMeal extends React.Component {
   constructor(props) {
@@ -39,7 +38,7 @@ class PlannedMeal extends React.Component {
   renderAddDish() {
     if (this.state.addingDish === true) {
       return <li>
-        <ListPicker
+        <DishPicker
           onCancel={() => this.setState({addingDish: false})}
           onSelect={this.handleAddDish.bind(this)}
           values={this.props.dishes}
@@ -60,10 +59,6 @@ class PlannedMeal extends React.Component {
 
 PlannedMeal.propTypes = {
   day: PropTypes.object.isRequired,
-  dishes: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
-  })).isRequired,
   meal: PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,
@@ -82,10 +77,4 @@ PlannedMeal.propTypes = {
   })
 };
 
-const mapStateToProps = (state) => {
-  return {
-    dishes: state.dishes.list,
-  };
-};
-
-export default connect(mapStateToProps)(PlannedMeal);
+export default PlannedMeal;
