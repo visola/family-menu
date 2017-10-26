@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import Button from 'react-bootstrap/lib/Button';
+import { Checkmark, Close } from 'react-bytesize-icons';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
@@ -7,15 +7,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { createDish } from '../actions/Dishes';
-import { Checkmark, Close } from 'react-bytesize-icons';
 
-const ICON_SIZE=16;
+const ICON_SIZE = 16;
 
 const FUSE_OPTIONS = {
   distance: 100,
   includeMatches: true,
   includeScore: true,
-  keys: ["name"],
+  keys: ['name'],
   location: 0,
   maxPatternLength: 32,
   minMatchCharLength: 2,
@@ -29,7 +28,7 @@ class DishPicker extends React.Component {
     this.state = {
       selectedSuggestion: -1,
       suggestions: [],
-      value: props.value || ''
+      value: '',
     };
   }
 
@@ -37,7 +36,7 @@ class DishPicker extends React.Component {
     let selectedSuggestion = -1;
     const suggestions = new Fuse(dishes, FUSE_OPTIONS).search(value);
 
-    if (suggestions.length > 0 && suggestions[0].score == 0) {
+    if (suggestions.length > 0 && suggestions[0].score === 0) {
       selectedSuggestion = 0;
     }
 
@@ -58,7 +57,13 @@ class DishPicker extends React.Component {
     this.props.onSelect(this.state.suggestions[index].item);
   }
 
-  handleOnCancel(e) {
+  handleMountInput(input) {
+    if (input) {
+      input.focus();
+    }
+  }
+
+  handleOnCancel() {
     this.props.onCancel();
   }
 
@@ -72,8 +77,8 @@ class DishPicker extends React.Component {
   }
 
   handleOnKeyDown(e) {
-    let selectedSuggestion = this.state.selectedSuggestion;
-    switch(e.key) {
+    let { selectedSuggestion } = this.state;
+    switch (e.key) {
       case 'Enter':
         this.handleOnSelect(e);
         break;
@@ -81,7 +86,7 @@ class DishPicker extends React.Component {
         this.handleOnCancel(e);
         break;
       case 'Backspace':
-        this.setState({suggestion:null});
+        this.setState({ suggestion: null });
         break;
       case 'ArrowDown':
         e.preventDefault();
@@ -89,7 +94,7 @@ class DishPicker extends React.Component {
         if (selectedSuggestion > this.state.suggestions.length) {
           selectedSuggestion = this.state.suggestions.length;
         }
-        this.setState({selectedSuggestion: selectedSuggestion});
+        this.setState({ selectedSuggestion });
         break;
       case 'ArrowUp':
         e.preventDefault();
@@ -97,13 +102,15 @@ class DishPicker extends React.Component {
         if (selectedSuggestion < -1) {
           selectedSuggestion = -1;
         }
-        this.setState({selectedSuggestion: selectedSuggestion});
+        this.setState({ selectedSuggestion });
         break;
+      default:
+        // Nothing to do here
     }
   }
 
-  handleOnSelect(e) {
-    const selectedSuggestion = this.state.selectedSuggestion;
+  handleOnSelect() {
+    const { selectedSuggestion } = this.state;
     if (selectedSuggestion >= 0 && selectedSuggestion < this.state.suggestions.length) {
       this.props.onSelect(this.state.suggestions[selectedSuggestion].item);
     }
@@ -113,6 +120,7 @@ class DishPicker extends React.Component {
     const value = this.state.suggestion ? this.state.suggestion.name : this.state.value;
     return <div className="dish-picker">
       <input
+        ref={this.handleMountInput.bind(this)}
         type="text"
         onChange={this.handleOnChange.bind(this)}
         onKeyDown={this.handleOnKeyDown.bind(this)}
@@ -133,10 +141,12 @@ class DishPicker extends React.Component {
     if (smallestScore > 0) {
       const classes = classnames({
         extra: true,
-        selected: this.state.selectedSuggestion == this.state.suggestions.length,
+        selected: this.state.selectedSuggestion === this.state.suggestions.length,
       });
-      return <li className={classes} onClick={this.handleClickCreate.bind(this)}>
-        Create '{this.state.value}'
+      return <li className={classes}>
+        <Button bsStyle="link" onClick={this.handleClickCreate.bind(this)}>
+          Create &apos;{this.state.value}&apos;
+        </Button>
       </li>;
     }
     return null;
@@ -145,7 +155,7 @@ class DishPicker extends React.Component {
   renderMatch(match, index) {
     const dish = match.item;
     const classes = classnames({
-      selected: index == this.state.selectedSuggestion,
+      selected: index === this.state.selectedSuggestion,
     });
     return <li key={dish.id} className={classes}>
       <Button bsStyle="link" onClick={this.handleClickDish.bind(this, index)}>
@@ -178,7 +188,7 @@ DishPicker.propTypes = {
   dishes: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,
-  })).isRequired
+  })).isRequired,
 };
 
 const mapStateToProps = (state) => {

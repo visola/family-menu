@@ -7,7 +7,6 @@ import MealsTable from '../components/MealsTable';
 
 class Meals extends React.Component {
   handlePlannedMealChanged(plannedMeal) {
-    console.log(plannedMeal);
     if (plannedMeal.id) {
       this.props.onPlannedMealChanged(plannedMeal);
     } else {
@@ -36,13 +35,21 @@ Meals.propTypes = {
     id: PropTypes.number.required,
     name: PropTypes.string.required,
   })).isRequired,
+  plannedMeals: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.required,
+    plannedDate: PropTypes.number.required,
+    dishes: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.required,
+      name: PropTypes.string.required,
+    })),
+  })).isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     meals: state.meals.list,
     people: state.people.list,
-    plannedMeals: state.plannedMeals.list
+    plannedMeals: state.plannedMeals.list,
   };
 };
 

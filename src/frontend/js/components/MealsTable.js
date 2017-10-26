@@ -38,8 +38,10 @@ class MealsTable extends React.Component {
   }
 
   renderMealForPerson(day, meal, person) {
-    const plannedMeal = _.find(this.props.plannedMeals, (plannedMeal) => {
-      plannedMeal.person.id == person.id && plannedMeal.plannedDate == day.unix();
+    const plannedMeal = _.find(this.props.plannedMeals, (p) => {
+      return p.person.id === person.id
+          && p.meal.id === meal.id
+          && p.plannedDate.isSame(day, 'day');
     });
     return <PlannedMeal
         key={person.id}
@@ -47,7 +49,8 @@ class MealsTable extends React.Component {
         meal={meal}
         onPlannedMealChanged={this.props.onPlannedMealChanged}
         person={person}
-      />
+        plannedMeal={plannedMeal}
+      />;
   }
 
   renderTableBody(days) {
@@ -81,8 +84,8 @@ MealsTable.propTypes = {
     dishes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.required,
       name: PropTypes.string.required,
-    }))
-  })).isRequired
+    })),
+  })).isRequired,
 };
 
 export default MealsTable;

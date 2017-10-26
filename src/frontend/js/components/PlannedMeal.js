@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Minus, Plus } from 'react-bytesize-icons';
+import { Plus } from 'react-bytesize-icons';
 
 import DishPicker from '../containers/DishPicker';
 
@@ -29,21 +29,22 @@ class PlannedMeal extends React.Component {
   }
 
   handleAddDish(dish) {
-    const plannedMeal = this.state.plannedMeal;
+    const { plannedMeal } = this.state;
     plannedMeal.dishes.push(dish);
-    plannedMeal.dishes.sort((d1, d2) => d1.name.localeCompare(d2.name));
     this.setState({ addingDish: false, plannedMeal });
     this.props.onPlannedMealChanged(plannedMeal);
   }
 
   handleStartAddingDish(e) {
     e.preventDefault();
-    this.setState({addingDish: true});
+    this.setState({ addingDish: true });
   }
 
   render() {
     return <div className="meal">
-      {this.props.person.name} <Button className="icon-button" onClick={this.handleStartAddingDish.bind(this)}>
+      {this.props.person.name}
+        &nbsp;
+        <Button className="icon-button" onClick={this.handleStartAddingDish.bind(this)}>
         <Plus height="16" width="16" />
       </Button>
       <ul>
@@ -57,17 +58,16 @@ class PlannedMeal extends React.Component {
     if (this.state.addingDish === true) {
       return <li>
         <DishPicker
-          onCancel={() => this.setState({addingDish: false})}
+          onCancel={() => this.setState({ addingDish: false })}
           onSelect={this.handleAddDish.bind(this)}
-          values={this.props.dishes}
         />
-      </li>
+      </li>;
     }
     return null;
   }
 
   renderPlannedDishes() {
-    const plannedMeal = this.state.plannedMeal;
+    const { plannedMeal } = this.state;
     if (plannedMeal.dishes.length > 0) {
       return plannedMeal.dishes.map((dish) => <li key={dish.id}>{dish.name}</li>);
     }

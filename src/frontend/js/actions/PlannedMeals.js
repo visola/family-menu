@@ -20,6 +20,7 @@ export function createPlannedMeal(plannedMeal) {
     return axios.post('/api/v1/plannedMeals', plannedMeal)
       .then((response) => {
         dispatch({ type: CREATE_PLANNED_MEAL_SUCCESSFUL, plannedMeal: response.data.content });
+        dispatch(loadPlannedMeals());
       }).catch((error) => {
         dispatch({ type: CREATE_PLANNED_MEAL_FAILURE, error });
       });
@@ -46,6 +47,7 @@ export function savePlannedMeal(plannedMeal) {
     return axios.put(`/api/v1/plannedMeals/${plannedMeal.id}`, plannedMeal)
       .then((response) => {
         dispatch({ type: SAVE_PLANNED_MEAL_SUCCESSFUL, plannedMeal: response.data.content });
+        dispatch(loadPlannedMeals());
       }).catch((error) => {
         dispatch({ type: SAVE_PLANNED_MEAL_FAILURE, error });
       });
