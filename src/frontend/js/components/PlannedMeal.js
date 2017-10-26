@@ -9,13 +9,31 @@ class PlannedMeal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addingDish: false
+      addingDish: false,
+      plannedMeal: this.getOrCreatePlannedMeal(props),
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const plannedMeal = this.getOrCreatePlannedMeal(newProps);
+    this.setState({ plannedMeal });
+  }
+
+  getOrCreatePlannedMeal(props) {
+    return props.plannedMeal || {
+      dishes: [],
+      meal: props.meal,
+      person: props.person,
+      plannedDate: props.day,
     };
   }
 
   handleAddDish(dish) {
-    console.log(dish);
-    this.setState({addingDish: false});
+    const plannedMeal = this.state.plannedMeal;
+    plannedMeal.dishes.push(dish);
+    plannedMeal.dishes.sort((d1, d2) => d1.name.localeCompare(d2.name));
+    this.setState({ addingDish: false, plannedMeal });
+    this.props.onPlannedMealChanged(plannedMeal);
   }
 
   handleStartAddingDish(e) {
@@ -49,9 +67,9 @@ class PlannedMeal extends React.Component {
   }
 
   renderPlannedDishes() {
-    if (this.props.plannedMeal) {
-      return this.props.plannedMeal.dishes.map((dish) => <li>
-      </li>);
+    const plannedMeal = this.state.plannedMeal;
+    if (plannedMeal.dishes.length > 0) {
+      return plannedMeal.dishes.map((dish) => <li key={dish.id}>{dish.name}</li>);
     }
     return null;
   }
@@ -63,6 +81,7 @@ PlannedMeal.propTypes = {
     id: PropTypes.number.required,
     name: PropTypes.string.required,
   }).isRequired,
+  onPlannedMealChanged: PropTypes.func.isRequired,
   person: PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,
@@ -73,8 +92,8 @@ PlannedMeal.propTypes = {
     dishes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.required,
       name: PropTypes.string.required,
-    })).isRequired
-  })
+    })).isRequired,
+  }),
 };
 
 export default PlannedMeal;

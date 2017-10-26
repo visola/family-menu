@@ -45,6 +45,7 @@ class MealsTable extends React.Component {
         key={person.id}
         day={day}
         meal={meal}
+        onPlannedMealChanged={this.props.onPlannedMealChanged}
         person={person}
       />
   }
@@ -69,6 +70,7 @@ MealsTable.propTypes = {
     id: PropTypes.number.required,
     name: PropTypes.string.required,
   })).isRequired,
+  onPlannedMealChanged: PropTypes.func.isRequired,
   people: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,

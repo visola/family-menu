@@ -33,15 +33,29 @@ class DishPicker extends React.Component {
     };
   }
 
+  checkSuggestions(dishes, value) {
+    let selectedSuggestion = -1;
+    const suggestions = new Fuse(dishes, FUSE_OPTIONS).search(value);
+
+    if (suggestions.length > 0 && suggestions[0].score == 0) {
+      selectedSuggestion = 0;
+    }
+
+    this.setState({ selectedSuggestion, suggestions });
+  }
+
   componentWillReceiveProps(nextProps) {
-    const suggestions = new Fuse(nextProps.dishes, FUSE_OPTIONS)
-      .search(this.state.value);
-    this.setState({ suggestions, selectedSuggestion: -1 });
+    this.checkSuggestions(nextProps.dishes, this.state.value);
   }
 
   handleClickCreate(e) {
     e.preventDefault();
     this.props.createDish(this.state.value);
+  }
+
+  handleClickDish(index, e) {
+    e.preventDefault();
+    this.props.onSelect(this.state.suggestions[index].item);
   }
 
   handleOnCancel(e) {
@@ -50,10 +64,9 @@ class DishPicker extends React.Component {
 
   handleOnChange(e) {
     const newValue = e.target.value;
-    const suggestions = new Fuse(this.props.dishes, FUSE_OPTIONS).search(newValue);
 
+    this.checkSuggestions(this.props.dishes, newValue);
     this.setState({
-      suggestions,
       value: newValue,
     });
   }
@@ -90,7 +103,10 @@ class DishPicker extends React.Component {
   }
 
   handleOnSelect(e) {
-    this.props.onSelect(this.state.suggestion);
+    const selectedSuggestion = this.state.selectedSuggestion;
+    if (selectedSuggestion >= 0 && selectedSuggestion < this.state.suggestions.length) {
+      this.props.onSelect(this.state.suggestions[selectedSuggestion].item);
+    }
   }
 
   render() {
@@ -113,13 +129,17 @@ class DishPicker extends React.Component {
   }
 
   renderCreateNew() {
-    const classes = classnames({
-      extra: true,
-      selected: this.state.selectedSuggestion == this.state.suggestions.length,
-    });
-    return <li className={classes} onClick={this.handleClickCreate.bind(this)}>
-      Create '{this.state.value}'
-    </li>;
+    const smallestScore = this.state.suggestions.length > 0 ? this.state.suggestions[0].score : 1;
+    if (smallestScore > 0) {
+      const classes = classnames({
+        extra: true,
+        selected: this.state.selectedSuggestion == this.state.suggestions.length,
+      });
+      return <li className={classes} onClick={this.handleClickCreate.bind(this)}>
+        Create '{this.state.value}'
+      </li>;
+    }
+    return null;
   }
 
   renderMatch(match, index) {
@@ -128,7 +148,9 @@ class DishPicker extends React.Component {
       selected: index == this.state.selectedSuggestion,
     });
     return <li key={dish.id} className={classes}>
-      {dish.name}
+      <Button bsStyle="link" onClick={this.handleClickDish.bind(this, index)}>
+        {dish.name}
+      </Button>
     </li>;
   }
 
