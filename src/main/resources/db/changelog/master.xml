@@ -95,6 +95,9 @@
             <column name="meal_id" type="integer">
                 <constraints nullable="false" />
             </column>
+            <column name="family_id" type="integer">
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <createTable tableName="planned_meal_dishes">

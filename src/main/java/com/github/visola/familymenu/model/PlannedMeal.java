@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A planned meal is a group of {@link Dish dishes} that will be served for someone on a specific {@link Meal meal} on a
  * specific date.
@@ -24,6 +26,9 @@ public class PlannedMeal {
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Calendar plannedDate;
+    @ManyToOne
+    @JsonIgnore
+    private Family family;
     @ManyToOne
     private Person person;
     @ManyToOne
@@ -69,6 +74,14 @@ public class PlannedMeal {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
     }
 
 }

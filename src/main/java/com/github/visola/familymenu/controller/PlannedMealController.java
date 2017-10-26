@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,7 +76,25 @@ public class PlannedMealController {
         plannedMeal.setMeal(checkMealAccess(loadedFamily, plannedMeal));
         plannedMeal.setPerson(checkPersonAccess(loadedFamily, plannedMeal));
         plannedMeal.setDishes(checkAccessToDishes(loadedFamily, plannedMeal));
+        plannedMeal.setFamily(loadedFamily);
         return plannedMealRepository.save(plannedMeal);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}")
+    public PlannedMeal updatePlannedMeal(
+            @PathVariable(name="id") Integer id,
+            @RequestBody @Valid PlannedMeal plannedMeal,
+            @AuthenticationPrincipal String familyName) {
+        Family loadedFamily = familyRepository.findByName(familyName);
+        PlannedMeal loadedPlannedMeal = plannedMealRepository.findOne(id);
+        if (!Objects.equals(loadedFamily.getId(), loadedPlannedMeal.getFamily().getId())) {
+            throw new NotAuthorizedException("You don't have access to change this planned meal");
+        }
+
+        loadedPlannedMeal.setMeal(checkMealAccess(loadedFamily, plannedMeal));
+        loadedPlannedMeal.setPerson(checkPersonAccess(loadedFamily, plannedMeal));
+        loadedPlannedMeal.setDishes(checkAccessToDishes(loadedFamily, plannedMeal));
+        return plannedMealRepository.save(loadedPlannedMeal);
     }
 
     private List<Dish> checkAccessToDishes(Family family, PlannedMeal plannedMeal) {
