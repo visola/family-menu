@@ -2,8 +2,38 @@ body {
   background: white;
 }
 
+.dish-picker {
+  position: relative;
+
+  > ul {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #ccc;
+    list-style: none;
+    max-width: 200px;
+    padding: 0 5px;
+    position: absolute;
+    top: 2em;
+
+    li.extra {
+      border-top: 1px solid #ccc;
+    }
+
+    li.selected {
+      background: #ffc;
+    }
+  }
+}
+
 form > * {
   margin: 0 0 10px
+}
+
+.icon-button {
+  height: 20px;
+  margin-left: 5px;
+  padding: 0;
+  width: 20px;
 }
 
 .login-page {

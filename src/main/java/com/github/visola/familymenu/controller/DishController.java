@@ -12,36 +12,35 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.visola.familymenu.model.Dish;
 import com.github.visola.familymenu.model.Family;
-import com.github.visola.familymenu.model.Person;
+import com.github.visola.familymenu.repository.DishRepository;
 import com.github.visola.familymenu.repository.FamilyRepository;
-import com.github.visola.familymenu.repository.PersonRepository;
 
 @RestController
-@RequestMapping("${api.base.path}/people")
-public class PersonController {
+@RequestMapping("${api.base.path}/dishes")
+public class DishController {
 
+    private final DishRepository dishRepository;
     private final FamilyRepository familyRepository;
 
-    private final PersonRepository personRepository;
-
     @Autowired
-    public PersonController(FamilyRepository familyRepository, PersonRepository personRepository) {
+    public DishController(DishRepository dishRepository, FamilyRepository familyRepository) {
+        this.dishRepository = dishRepository;
         this.familyRepository = familyRepository;
-        this.personRepository = personRepository;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Page<Person> getPeople(@RequestParam(defaultValue="0", name="page") Integer page, @AuthenticationPrincipal String familyName) {
-        PageRequest request = new PageRequest(page, 25);
-        return personRepository.findByFamilyNameOrderByName(request, familyName);
+    @RequestMapping(method=RequestMethod.GET)
+    public Page<Dish> getDishes(@RequestParam(defaultValue="0", name="page") Integer page, @AuthenticationPrincipal String familyName) {
+        PageRequest request = new PageRequest(page, 100);
+        return dishRepository.findByFamilyName(request, familyName);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Person createPerson(@RequestBody @Valid Person person, @AuthenticationPrincipal String familyName) {
+    @RequestMapping(method=RequestMethod.POST)
+    public Dish createDish(@RequestBody @Valid Dish dish, @AuthenticationPrincipal String familyName) {
         Family loadedFamily = familyRepository.findByName(familyName);
-        person.setFamily(loadedFamily);
-        return personRepository.save(person);
+        dish.setFamily(loadedFamily);
+        return dishRepository.save(dish);
     }
 
 }

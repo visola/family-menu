@@ -9,16 +9,18 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * A dish is something that will be served as part of a planned meal for someone.
+ */
 @Entity
-public class Person {
+public class Dish {
 
     @GeneratedValue
     @Id
     private Integer id;
     @NotNull
-    @Size(min = 2, max = 255)
+    @Size(min=2)
     private String name;
-    private String email;
     @JsonIgnore
     @ManyToOne
     private Family family;
@@ -37,14 +39,6 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Family getFamily() {

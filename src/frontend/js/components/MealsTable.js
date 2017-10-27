@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Meal from './Meal';
+import PlannedMeal from './PlannedMeal';
 
 class MealsTable extends React.Component {
   getDays() {
@@ -31,13 +32,34 @@ class MealsTable extends React.Component {
     </tr>;
   }
 
+  renderMeal(day, meal) {
+    return this.props.people
+      .map((person) => this.renderMealForPerson(day, meal, person));
+  }
+
+  renderMealForPerson(day, meal, person) {
+    const plannedMeal = _.find(this.props.plannedMeals, (p) => {
+      return p.person.id === person.id
+          && p.meal.id === meal.id
+          && p.plannedDate.isSame(day, 'day');
+    });
+    return <PlannedMeal
+        key={person.id}
+        day={day}
+        meal={meal}
+        onPlannedMealChanged={this.props.onPlannedMealChanged}
+        person={person}
+        plannedMeal={plannedMeal}
+      />;
+  }
+
   renderTableBody(days) {
     const result = [];
     this.props.meals.forEach((meal) => {
       const cellsInRow = [<td key={-1}>{meal.name}</td>];
       days.forEach((day) => {
         cellsInRow.push(<td key={day}>
-          <Meal day={day} meal={meal} people={this.props.people} />
+          {this.renderMeal(day, meal)}
         </td>);
       });
       result.push(<tr className={`meal ${meal.name}`} key={meal.id}>{cellsInRow}</tr>);
@@ -51,9 +73,18 @@ MealsTable.propTypes = {
     id: PropTypes.number.required,
     name: PropTypes.string.required,
   })).isRequired,
+  onPlannedMealChanged: PropTypes.func.isRequired,
   people: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.required,
     name: PropTypes.string.required,
+  })).isRequired,
+  plannedMeals: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.required,
+    plannedDate: PropTypes.number.required,
+    dishes: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.required,
+      name: PropTypes.string.required,
+    })),
   })).isRequired,
 };
 
