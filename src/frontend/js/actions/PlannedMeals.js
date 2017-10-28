@@ -16,8 +16,10 @@ export const SAVE_PLANNED_MEAL_FAILURE = 'SAVE_PLANNED_MEAL_FAILURE';
 export function createPlannedMeal(plannedMeal) {
   return (dispatch) => {
     dispatch({ type: CREATE_PLANNED_MEAL_REQUEST });
+    const plannedDate = plannedMeal.plannedDate.utc().startOf('day');
+    const toSave = Object.assign({}, plannedMeal, { plannedDate });
 
-    return axios.post('/api/v1/plannedMeals', plannedMeal)
+    return axios.post('/api/v1/plannedMeals', toSave)
       .then((response) => {
         dispatch({ type: CREATE_PLANNED_MEAL_SUCCESSFUL, plannedMeal: response.data.content });
         dispatch(loadPlannedMeals());
