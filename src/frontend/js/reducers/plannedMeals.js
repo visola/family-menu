@@ -19,7 +19,7 @@ export function plannedMeals(state = defaultState, action) {
 
     case LOAD_PLANNED_MEALS_SUCCESSFUL:
       list = action.plannedMeals.map((p) => {
-        const newP = Object.assign({}, p, { plannedDate: moment(p.plannedDate) });
+        const newP = Object.assign({}, p, { plannedDate: moment(p.plannedDate).utc() });
         newP.dishes.sort((d1, d2) => d1.name.localeCompare(d2.name));
         return newP;
       });

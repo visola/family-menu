@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Plus } from 'react-bytesize-icons';
+import { Minus, Plus } from 'react-bytesize-icons';
 
 import DishPicker from '../containers/DishPicker';
 
@@ -32,6 +33,13 @@ class PlannedMeal extends React.Component {
     const { plannedMeal } = this.state;
     plannedMeal.dishes.push(dish);
     this.setState({ addingDish: false, plannedMeal });
+    this.props.onPlannedMealChanged(plannedMeal);
+  }
+
+  handleRemoveDish(dish) {
+    const { plannedMeal } = this.state;
+    _.remove(plannedMeal.dishes, (d) => d.id === dish.id);
+    this.setState({ plannedMeal });
     this.props.onPlannedMealChanged(plannedMeal);
   }
 
@@ -66,10 +74,20 @@ class PlannedMeal extends React.Component {
     return null;
   }
 
+  renderDish(dish) {
+    return <li key={dish.id}>
+      {dish.name}
+      &nbsp;
+      <Button className="icon-button" onClick={this.handleRemoveDish.bind(this, dish)}>
+        <Minus height="16" width="16" />
+      </Button>
+    </li>;
+  }
+
   renderPlannedDishes() {
     const { plannedMeal } = this.state;
     if (plannedMeal.dishes.length > 0) {
-      return plannedMeal.dishes.map((dish) => <li key={dish.id}>{dish.name}</li>);
+      return plannedMeal.dishes.map(this.renderDish.bind(this));
     }
     return null;
   }
