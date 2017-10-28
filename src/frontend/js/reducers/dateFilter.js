@@ -1,14 +1,14 @@
 import moment from 'moment';
 
 import {
-  FILTER_DATES
+  FILTER_DATES,
 } from '../actions/DateFilter';
 
 const beginOfWeek = moment().startOf('week');
 
 const defaultState = {
   start: beginOfWeek,
-  end: beginOfWeek.clone().add(7, 'days')
+  end: beginOfWeek.clone().add(7, 'days'),
 };
 
 export function dateFilter(state = defaultState, action) {

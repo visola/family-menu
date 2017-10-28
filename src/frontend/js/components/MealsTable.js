@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -18,7 +17,7 @@ class MealsTable extends React.Component {
 
   render() {
     const days = this.getDays();
-    return <table className="table">
+    return <table className="meals-table table">
       <thead>{this.renderDays(days)}</thead>
       <tbody>
         {this.renderTableBody(days)}
