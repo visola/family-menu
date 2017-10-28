@@ -78,20 +78,20 @@ class PlannedMeal extends React.Component {
 PlannedMeal.propTypes = {
   day: PropTypes.object.isRequired,
   meal: PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   }).isRequired,
   onPlannedMealChanged: PropTypes.func.isRequired,
   person: PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   }).isRequired,
   plannedMeal: PropTypes.shape({
-    id: PropTypes.number.required,
-    plannedDate: PropTypes.number.required,
+    id: PropTypes.number.isRequired,
+    plannedDate: PropTypes.object.isRequired,
     dishes: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.required,
-      name: PropTypes.string.required,
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
     })).isRequired,
   }),
 };

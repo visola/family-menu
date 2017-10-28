@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -7,17 +6,18 @@ import PlannedMeal from './PlannedMeal';
 
 class MealsTable extends React.Component {
   getDays() {
+    const { endDate, startDate } = this.props;
+    const diff = endDate.diff(startDate, 'days');
     const result = [];
-    const beginOfWeek = moment().startOf('week');
-    for (let i = 0; i < 7; i += 1) {
-      result.push(beginOfWeek.clone().add(i, 'days'));
+    for (let i = 0; i < diff; i += 1) {
+      result.push(startDate.clone().add(i, 'days'));
     }
     return result;
   }
 
   render() {
     const days = this.getDays();
-    return <table className="table">
+    return <table className="meals-table table">
       <thead>{this.renderDays(days)}</thead>
       <tbody>
         {this.renderTableBody(days)}
@@ -69,23 +69,25 @@ class MealsTable extends React.Component {
 }
 
 MealsTable.propTypes = {
+  endDate: PropTypes.object.isRequired,
   meals: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
   onPlannedMealChanged: PropTypes.func.isRequired,
   people: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
   plannedMeals: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    plannedDate: PropTypes.number.required,
+    id: PropTypes.number.isRequired,
+    plannedDate: PropTypes.object.isRequired,
     dishes: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.required,
-      name: PropTypes.string.required,
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
     })),
   })).isRequired,
+  startDate: PropTypes.object.isRequired,
 };
 
 export default MealsTable;

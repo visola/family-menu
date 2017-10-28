@@ -113,8 +113,8 @@ class People extends React.Component {
 People.propTypes = {
   createPerson: PropTypes.func.isRequired,
   people: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
 };
 

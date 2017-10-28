@@ -27,11 +27,20 @@ export function createPlannedMeal(plannedMeal) {
   };
 }
 
-export function loadPlannedMeals() {
+export function loadPlannedMeals(start, end) {
   return (dispatch) => {
+    let endString;
+    let startString;
+    if (start) {
+      startString = start.toISOString();
+    }
+    if (end) {
+      endString = end.toISOString();
+    }
+
     dispatch({ type: LOAD_PLANNED_MEALS_REQUEST });
 
-    return axios.get('/api/v1/plannedMeals')
+    return axios.get('/api/v1/plannedMeals', { params: { end: endString, start: startString } })
       .then((response) => {
         dispatch({ type: LOAD_PLANNED_MEALS_SUCCESSFUL, plannedMeals: response.data.content });
       }).catch((error) => {

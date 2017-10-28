@@ -187,8 +187,8 @@ DishPicker.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   dishes: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
 };
 
