@@ -47,14 +47,13 @@ class DishPicker extends React.Component {
     this.checkSuggestions(nextProps.dishes, this.state.value);
   }
 
-  handleClickCreate(e) {
-    e.preventDefault();
-    this.props.createDish(this.state.value);
-  }
-
   handleClickDish(index, e) {
     e.preventDefault();
     this.props.onSelect(this.state.suggestions[index].item);
+  }
+
+  handleCreate() {
+    this.props.createDish(this.state.value);
   }
 
   handleMountInput(input) {
@@ -113,6 +112,8 @@ class DishPicker extends React.Component {
     const { selectedSuggestion } = this.state;
     if (selectedSuggestion >= 0 && selectedSuggestion < this.state.suggestions.length) {
       this.props.onSelect(this.state.suggestions[selectedSuggestion].item);
+    } else if (selectedSuggestion == this.state.suggestions.length) {
+      this.handleCreate();
     }
   }
 
@@ -144,7 +145,7 @@ class DishPicker extends React.Component {
         selected: this.state.selectedSuggestion === this.state.suggestions.length,
       });
       return <li className={classes}>
-        <Button bsStyle="link" onClick={this.handleClickCreate.bind(this)}>
+        <Button bsStyle="link" onClick={this.handleCreate.bind(this)}>
           Create &apos;{this.state.value}&apos;
         </Button>
       </li>;
