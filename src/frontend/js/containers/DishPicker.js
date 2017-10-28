@@ -112,7 +112,7 @@ class DishPicker extends React.Component {
     const { selectedSuggestion } = this.state;
     if (selectedSuggestion >= 0 && selectedSuggestion < this.state.suggestions.length) {
       this.props.onSelect(this.state.suggestions[selectedSuggestion].item);
-    } else if (selectedSuggestion == this.state.suggestions.length) {
+    } else if (selectedSuggestion === this.state.suggestions.length) {
       this.handleCreate();
     }
   }
