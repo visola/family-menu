@@ -13,8 +13,8 @@ class PersonList extends React.Component {
 
 PersonList.propTypes = {
   people: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.required,
-    name: PropTypes.string.required,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
 };
 
