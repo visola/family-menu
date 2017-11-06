@@ -22,7 +22,7 @@ class PortionCounter extends React.Component {
     const portionCountByDishName = {};
     this.props.plannedMeals.forEach((plannedMeal) => {
       plannedMeal.dishes.forEach((dish) => {
-        let countContainer = portionCountByDishName[dish.name] || { count: 0, dish };
+        const countContainer = portionCountByDishName[dish.name] || { count: 0, dish };
         countContainer.count += 1;
         portionCountByDishName[dish.name] = countContainer;
       });
