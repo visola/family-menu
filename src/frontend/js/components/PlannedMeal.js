@@ -50,7 +50,7 @@ class PlannedMeal extends React.Component {
 
   render() {
     return <div className="meal">
-      {this.props.person.name}
+        <span>{this.props.person.name}</span>
         &nbsp;
         <Button className="icon-button" onClick={this.handleStartAddingDish.bind(this)}>
         <Plus height="16" width="16" />
