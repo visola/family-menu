@@ -3,6 +3,8 @@ build
 .classpath
 .DS_Store
 .gradle
+.idea
+*.iml
 node_modules
 .project
 .settings
