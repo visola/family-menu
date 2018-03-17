@@ -7,12 +7,7 @@ import PortionCounter from '../containers/PortionCounter';
 
 class Home extends React.Component {
   render() {
-    return <div>
-      <People />
-      <DateNavigator />
-      <PortionCounter />
-      <Meals />
-    </div>;
+    return <div>This is the home screen.</div>;
   }
 }
 

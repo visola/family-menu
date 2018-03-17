@@ -1,80 +1,101 @@
 import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
+import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Family from '../models/Family';
 
-class CreateFamilyForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-    };
+@inject('security')
+@observer
+export default class CreateFamilyForm extends React.Component {
+  static propTypes = {
+    security: PropTypes.object.isRequired,
   }
 
-  onChange(e, field) {
-    this.setState({ [field]: e.target.value });
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      confirmPassword: '',
+      family: new Family(),
+      password: '',
+    };
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChangeFamily(e, field) {
+    this.state.family.model[field] = e.target.value;
+  }
+
+  onChangeState(e, field) {
+    this.setState({ [field]: e.target.value })
   }
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state);
+    const loginRequest = {
+      name: this.state.family.model.name,
+      password: this.state.password,
+    };
+
+    this.state.family
+      .save({password: this.state.password})
+      .then(() => this.props.security.login(loginRequest));
   }
 
   render() {
-    const canSubmit = this.state.name.length > 3
-      && this.state.email.length > 5
-      && this.state.password.length > 2
-      && this.state.confirmPassword.length > 2;
-    return <form className="create" onSubmit={this.onSubmit.bind(this)}>
+    const { confirmPassword, family, password } = this.state;
+    const { saving } = family;
+    const { email, name } = family.model;
+
+    const canSubmit = name.length > 3
+      && email.length > 5
+      && password.length > 2
+      && confirmPassword.length > 2;
+
+    return <form className="create" onSubmit={this.onSubmit}>
       <FormControl
-        disabled={this.props.creating}
+        disabled={saving}
         type="text"
-        onChange={e => this.onChange(e, 'name')}
+        onChange={e => this.onChangeFamily(e, 'name')}
         placeholder="Family Name"
-        value={this.state.name} />
+        value={name} />
       <FormControl
-        disabled={this.props.creating}
+        disabled={saving}
         type="email"
-        onChange={e => this.onChange(e, 'email')}
+        onChange={e => this.onChangeFamily(e, 'email')}
         placeholder="Email Address"
-        value={this.state.email} />
+        value={email} />
       <FormControl
-        disabled={this.props.creating}
+        disabled={saving}
         type="password"
-        onChange={e => this.onChange(e, 'password')}
+        onChange={e => this.onChangeState(e, 'password')}
         placeholder="Password"
-        value={this.state.password} />
+        value={password} />
         <FormControl
-          disabled={this.props.creating}
+          disabled={saving}
           type="password"
-          onChange={e => this.onChange(e, 'confirmPassword')}
+          onChange={e => this.onChangeState(e, 'confirmPassword')}
           placeholder="Confirm Password"
-          value={this.state.confirmPassword} />
-      <Button disabled={this.props.creating || !canSubmit} type="submit">Create</Button>
+          value={confirmPassword} />
+      <Button disabled={saving || !canSubmit} type="submit">Create</Button>
       {this.renderStatus()}
     </form>;
   }
 
   renderStatus() {
-    if (this.state.password !== this.state.confirmPassword) {
+    const { confirmPassword, family, password } = this.state;
+    const { error, saving } = family;
+
+    if (password !== confirmPassword) {
       return <p className="text-danger">Confirm password does not match password.</p>;
-    } else if (this.props.createError) {
-      return <p className="text-danger">{this.props.createError}</p>;
-    } else if (this.props.creating) {
+    } else if (error) {
+      return <p className="text-danger">{error}</p>;
+    } else if (saving) {
       return <p>Creating your family...</p>;
     }
     return null;
   }
 }
-
-CreateFamilyForm.propTypes = {
-  createError: PropTypes.string,
-  creating: PropTypes.bool.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};
-
-export default CreateFamilyForm;
