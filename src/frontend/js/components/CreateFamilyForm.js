@@ -22,18 +22,18 @@ export default class CreateFamilyForm extends React.Component {
       password: '',
     };
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChangeFamily(e, field) {
+  handleChangeFamily(e, field) {
     this.state.family.model[field] = e.target.value;
   }
 
-  onChangeState(e, field) {
+  handleChangeState(e, field) {
     this.setState({ [field]: e.target.value })
   }
 
-  onSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
     const loginRequest = {
       name: this.state.family.model.name,
@@ -55,29 +55,29 @@ export default class CreateFamilyForm extends React.Component {
       && password.length > 2
       && confirmPassword.length > 2;
 
-    return <form className="create" onSubmit={this.onSubmit}>
+    return <form className="create" onSubmit={this.handleSubmit}>
       <FormControl
         disabled={saving}
         type="text"
-        onChange={e => this.onChangeFamily(e, 'name')}
+        onChange={e => this.handleChangeFamily(e, 'name')}
         placeholder="Family Name"
         value={name} />
       <FormControl
         disabled={saving}
         type="email"
-        onChange={e => this.onChangeFamily(e, 'email')}
+        onChange={e => this.handleChangeFamily(e, 'email')}
         placeholder="Email Address"
         value={email} />
       <FormControl
         disabled={saving}
         type="password"
-        onChange={e => this.onChangeState(e, 'password')}
+        onChange={e => this.handleChangeState(e, 'password')}
         placeholder="Password"
         value={password} />
         <FormControl
           disabled={saving}
           type="password"
-          onChange={e => this.onChangeState(e, 'confirmPassword')}
+          onChange={e => this.handleChangeState(e, 'confirmPassword')}
           placeholder="Confirm Password"
           value={confirmPassword} />
       <Button disabled={saving || !canSubmit} type="submit">Create</Button>

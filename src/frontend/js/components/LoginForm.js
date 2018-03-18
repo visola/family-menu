@@ -18,14 +18,15 @@ export default class LoginForm extends React.Component {
       password: '',
     };
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChange(e, field) {
+  handleChange(e, field) {
     this.setState({ [field]: e.target.value });
   }
 
-  onSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
     this.props.security.login(this.state);
   }
@@ -33,17 +34,17 @@ export default class LoginForm extends React.Component {
   render() {
     const { security } = this.props;
     const canSubmit = this.state.name.length > 3 && this.state.password.length > 2;
-    return <form className="login-form" onSubmit={this.onSubmit}>
+    return <form className="login-form" onSubmit={this.handleSubmit}>
       <FormControl
         disabled={security.loggingIn}
         type="text"
-        onChange={e => this.onChange(e, 'name')}
+        onChange={e => this.handleChange(e, 'name')}
         placeholder="Family Name or Email"
         value={this.state.name} />
       <FormControl
         disabled={security.loggingIn}
         type="password"
-        onChange={e => this.onChange(e, 'password')}
+        onChange={e => this.handleChange(e, 'password')}
         placeholder="Password"
         value={this.state.password} />
       <Button disabled={security.loggingIn || !canSubmit} type="submit">Login</Button>

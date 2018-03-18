@@ -21,6 +21,7 @@ export default class Security {
       return;
     }
 
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     this.family.name = data.sub;
   }
 
