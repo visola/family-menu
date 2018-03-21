@@ -24,6 +24,10 @@ export default class Collection {
     throw new Error("Abstract model class.");
   }
 
+  forEach(callback) {
+    this.collection.forEach(callback);
+  }
+
   map(callback) {
     return this.collection.map(callback);
   }

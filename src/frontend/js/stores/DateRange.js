@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import moment from 'moment';
 
 export default class DateRange {
@@ -7,6 +7,14 @@ export default class DateRange {
 
   constructor() {
     this.goToToday();
+  }
+
+  @computed
+  get interval() {
+    return {
+      start: this.start.toISOString(),
+      end: this.end.toISOString(),
+    };
   }
 
   @action
