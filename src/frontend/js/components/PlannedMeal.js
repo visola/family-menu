@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Minus, Plus } from 'react-bytesize-icons';
 
-import DishPicker from '../containers/DishPicker';
+import DishPicker from './DishPicker';
 
 class PlannedMeal extends React.Component {
   constructor(props) {

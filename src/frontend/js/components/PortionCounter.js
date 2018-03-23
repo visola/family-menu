@@ -10,11 +10,6 @@ export default class PortionCounter extends React.Component {
     plannedMeals: PropTypes.object.isRequired,
   }
 
-  componentWillMount() {
-    const { dateRange, plannedMeals } = this.props;
-    plannedMeals.fetch(dateRange.interval);
-  }
-
   render() {
     return <div className="portion-counter">
       <h3>Portions this week:</h3>

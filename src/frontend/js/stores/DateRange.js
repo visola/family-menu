@@ -10,6 +10,17 @@ export default class DateRange {
   }
 
   @computed
+  get days() {
+    const { end, start } = this;
+    const diff = end.diff(start, 'days');
+    const result = [];
+    for (let i = 0; i < diff; i += 1) {
+      result.push(start.clone().add(i, 'days'));
+    }
+    return result;
+  }
+
+  @computed
   get interval() {
     return {
       start: this.start.toISOString(),

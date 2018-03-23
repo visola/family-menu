@@ -11,6 +11,4 @@ const App = () => (
   </Provider>
 );
 
-stores.security.checkLoggedIn();
-
 render(<App />, document.getElementById('container'));

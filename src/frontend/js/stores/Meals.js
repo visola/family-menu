@@ -3,7 +3,7 @@ import { action, reaction } from 'mobx';
 
 import Collection from './Collection';
 
-export default class PlannedMeals extends Collection {
+export default class Meals extends Collection {
   constructor(dateRange) {
     super();
     this.dateRange = dateRange;
@@ -13,13 +13,13 @@ export default class PlannedMeals extends Collection {
   @action
   fetch(interval) {
     this.loading = true;
-    axios.get('/api/v1/plannedMeals', { params: interval })
+    axios.get('/api/v1/meals', { params: interval })
       .then(({data}) => this.setCollection(data.content))
       .catch((error) => this.setError(error));
   }
 
   get url() {
-    return 'plannedMeals';
+    return 'meals';
   }
 
 }

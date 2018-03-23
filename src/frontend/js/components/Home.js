@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DateNavigator from './DateNavigator';
+import Meals from './Meals';
 import People from './People';
 import PortionCounter from './PortionCounter';
 
@@ -10,6 +11,7 @@ class Home extends React.Component {
       <People />
       <DateNavigator />
       <PortionCounter />
+      <Meals />
     </div>;
   }
 }
