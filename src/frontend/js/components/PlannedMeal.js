@@ -6,7 +6,15 @@ import { Minus, Plus } from 'react-bytesize-icons';
 
 import DishPicker from './DishPicker';
 
-class PlannedMeal extends React.Component {
+export default class PlannedMeal extends React.Component {
+  static propTypes = {
+    day: PropTypes.object.isRequired,
+    meal: PropTypes.object.isRequired,
+    onPlannedMealChanged: PropTypes.func.isRequired,
+    person: PropTypes.object.isRequired,
+    plannedMeal: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -92,26 +100,3 @@ class PlannedMeal extends React.Component {
     return null;
   }
 }
-
-PlannedMeal.propTypes = {
-  day: PropTypes.object.isRequired,
-  meal: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  onPlannedMealChanged: PropTypes.func.isRequired,
-  person: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  plannedMeal: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    plannedDate: PropTypes.object.isRequired,
-    dishes: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })).isRequired,
-  }),
-};
-
-export default PlannedMeal;

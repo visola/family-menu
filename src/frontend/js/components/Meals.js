@@ -7,7 +7,7 @@ import PlannedMeal from './PlannedMeal';
 @observer
 export default class Meals extends React.Component {
   handlePlannedMealChanged(plannedMeal) {
-    this.props.plannedMeals.saveOne(plannedMeals);
+    this.props.plannedMeals.saveOne(plannedMeal);
   }
 
   render () {
@@ -38,7 +38,7 @@ export default class Meals extends React.Component {
   }
 
   renderMealForPerson(day, meal, person) {
-    const plannedMeal = _.find(this.props.plannedMeals, (p) => {
+    const plannedMeal = this.props.plannedMeals.find((p) => {
       return p.person.id === person.id
         && p.meal.id === meal.id
         && p.plannedDate.isSame(day, 'day');

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { action, reaction } from 'mobx';
+import moment from 'moment';
 
 import Collection from './Collection';
 
@@ -20,6 +21,12 @@ export default class PlannedMeals extends Collection {
 
   get url() {
     return 'plannedMeals';
+  }
+
+  processOne(receivedData) {
+    return Object.assign({}, receivedData, {
+      plannedDate: moment(receivedData.plannedDate),
+    });
   }
 
 }

@@ -24,12 +24,20 @@ export default class Collection {
     throw new Error("Abstract model class.");
   }
 
+  find(callback) {
+    return this.collection.find(callback);
+  }
+
   forEach(callback) {
     this.collection.forEach(callback);
   }
 
   map(callback) {
     return this.collection.map(callback);
+  }
+
+  processOne(receivedData) {
+    return receivedData;
   }
 
   @action
@@ -49,7 +57,7 @@ export default class Collection {
     this.saving = true;
     if (data.id == null) {
       return axios.post(`${constants.apiRoot}/${this.url}`, data)
-        .then(({data}) => this.push(data))
+        .then(({data}) => this.push(this.processOne(data)))
         .catch((error) => this.setError(error));
     }
 
@@ -57,13 +65,13 @@ export default class Collection {
     let model = this.collection[index];
     model = Object.assign({}, model, data);
     return axios.put(`${constants.apiRoot}/${this.url}/${model.id}`, data)
-            .then(({receivedData}) => this.setModel(receivedData, index))
+            .then(({data}) => this.setModel(this.processOne(data), index))
             .catch((error) => this.setError(error));
   }
 
   @action
   setCollection(newCollection) {
-    this.collection = newCollection;
+    this.collection = (newCollection || []).map((d) => this.processOne(d));
     this.resetState();
   }
 
