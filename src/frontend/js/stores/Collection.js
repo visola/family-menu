@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { action, observable } from 'mobx';
+import axios from 'axios';
 
 import constants from '../constants';
 

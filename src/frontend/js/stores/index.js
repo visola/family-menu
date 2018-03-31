@@ -18,12 +18,11 @@ const plannedMeals = new PlannedMeals(dateRange);
 security.checkLoggedIn();
 autorun(() => {
   if (security.isLoggedIn) {
+    dishes.fetch();
     meals.fetch();
     plannedMeals.fetch();
   }
 });
-
-dishes.fetch();
 
 export default {
   dateRange,
