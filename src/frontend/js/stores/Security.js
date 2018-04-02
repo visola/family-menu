@@ -4,12 +4,13 @@ import { action, computed, observable } from 'mobx';
 import constants from '../constants';
 
 export default class Security {
+  @observable loginError = null;
   @observable loggingIn = false;
   @observable family = {};
 
   @action
   checkLoggedIn() {
-    const token = localStorage['token'];
+    const { token } = localStorage;
     this.family = {};
     if (token == null) {
       return;
@@ -35,9 +36,17 @@ export default class Security {
     this.loggingIn = true;
     return axios.post(`${constants.apiRoot}/login`, loginRequest)
       .then((response) => {
-        localStorage['token'] = response.data.token;
+        localStorage.token = response.data.token;
         this.checkLoggedIn();
+      })
+      .catch((error) => {
+        if (error.response
+          && error.response.status === 403
+          && error.response.data.exception === 'org.springframework.security.authentication.BadCredentialsException') {
+          this.loginError = 'Wrong family name/password combination.';
+        } else {
+          this.loginError = 'Sorry, an error occured while trying to log you in.';
+        }
       });
   }
-
 }

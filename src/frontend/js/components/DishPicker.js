@@ -1,4 +1,3 @@
-import { autorun } from 'mobx';
 import Button from 'react-bootstrap/lib/Button';
 import { Checkmark, Close } from 'react-bytesize-icons';
 import classnames from 'classnames';
@@ -24,6 +23,12 @@ const FUSE_OPTIONS = {
 @inject('dishes')
 @observer
 export default class DishPicker extends React.Component {
+  static propTypes = {
+    dishes: PropTypes.object.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

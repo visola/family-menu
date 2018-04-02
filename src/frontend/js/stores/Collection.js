@@ -12,8 +12,8 @@ export default class Collection {
   fetch() {
     this.loading = true;
     return axios.get(`${constants.apiRoot}/${this.url}`)
-        .then(({data}) => this.setCollection(data.content))
-        .catch((error) => this.setError(error));
+      .then(({ data }) => this.setCollection(data.content))
+      .catch((error) => this.setError(error));
   }
 
   get length() {
@@ -21,7 +21,7 @@ export default class Collection {
   }
 
   get url() {
-    throw new Error("Abstract model class.");
+    throw new Error('Abstract model class.');
   }
 
   find(callback) {
@@ -53,20 +53,20 @@ export default class Collection {
   }
 
   @action
-  saveOne(data) {
+  saveOne(newData) {
     this.saving = true;
-    if (data.id == null) {
-      return axios.post(`${constants.apiRoot}/${this.url}`, data)
-        .then(({data}) => this.push(this.processOne(data)))
+    if (newData.id == null) {
+      return axios.post(`${constants.apiRoot}/${this.url}`, newData)
+        .then(({ data }) => this.push(this.processOne(data)))
         .catch((error) => this.setError(error));
     }
 
-    const index = this.collection.findIndex((m) => m.id === data.id);
+    const index = this.collection.findIndex((m) => m.id === newData.id);
     let model = this.collection[index];
-    model = Object.assign({}, model, data);
-    return axios.put(`${constants.apiRoot}/${this.url}/${model.id}`, data)
-            .then(({data}) => this.setModel(this.processOne(data), index))
-            .catch((error) => this.setError(error));
+    model = Object.assign({}, model, newData);
+    return axios.put(`${constants.apiRoot}/${this.url}/${model.id}`, model)
+      .then(({ data }) => this.setModel(this.processOne(data), index))
+      .catch((error) => this.setError(error));
   }
 
   @action
@@ -77,14 +77,13 @@ export default class Collection {
 
   @action
   setError(error) {
-    console.log(error);
-    console.log("Response is: ", error.response);
-    let message = error.message;
+    let { message } = error;
     if (error && error.response && error.response.data && error.response.data.message) {
-      message = error.response.data.message;
+      ({ message } = error.response.data);
     }
     this.error = message;
     this.resetState();
+    throw error;
   }
 
   @action

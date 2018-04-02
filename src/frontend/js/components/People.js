@@ -91,7 +91,7 @@ export default class People extends React.Component {
   }
 
   renderModal() {
-     return <Modal
+    return <Modal
              onAccept={this.handleAddPersonSave}
              onCancel={this.handleCancelOrCloseAddPerson}
              onClose={this.handleCancelOrCloseAddPerson}
@@ -111,7 +111,7 @@ export default class People extends React.Component {
          />
        </form>
      </Modal>;
-   }
+  }
 
   renderPeople() {
     if (this.state.showList === true) {

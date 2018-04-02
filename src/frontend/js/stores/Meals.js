@@ -14,12 +14,11 @@ export default class Meals extends Collection {
   fetch(interval) {
     this.loading = true;
     axios.get('/api/v1/meals', { params: interval })
-      .then(({data}) => this.setCollection(data.content))
+      .then(({ data }) => this.setCollection(data.content))
       .catch((error) => this.setError(error));
   }
 
   get url() {
     return 'meals';
   }
-
 }

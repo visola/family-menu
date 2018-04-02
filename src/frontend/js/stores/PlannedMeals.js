@@ -15,7 +15,7 @@ export default class PlannedMeals extends Collection {
   fetch(interval) {
     this.loading = true;
     axios.get('/api/v1/plannedMeals', { params: interval })
-      .then(({data}) => this.setCollection(data.content))
+      .then(({ data }) => this.setCollection(data.content))
       .catch((error) => this.setError(error));
   }
 
@@ -28,5 +28,4 @@ export default class PlannedMeals extends Collection {
       plannedDate: moment(receivedData.plannedDate),
     });
   }
-
 }

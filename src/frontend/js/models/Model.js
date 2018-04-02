@@ -17,12 +17,12 @@ export default class Model {
     fetch() {
       this.loading = true;
       return axios.get(`${constants.apiRoot}/${this.url}/${this.model.id}`)
-          .then(({data}) => this.setModel(data))
-          .catch((error) => this.setError(error));
+        .then(({ data }) => this.setModel(data))
+        .catch((error) => this.setError(error));
     }
 
     get url() {
-      throw new Error("Abstract model class.");
+      throw new Error('Abstract model class.');
     }
 
     @action
@@ -35,26 +35,25 @@ export default class Model {
 
       if (this.model.id == null) {
         return axios.post(`${constants.apiRoot}/${this.url}/`, model)
-            .then(({data}) => this.setModel(data))
-            .catch((error) => this.setError(error));
+          .then(({ data }) => this.setModel(data))
+          .catch((error) => this.setError(error));
       }
 
       return axios.put(`${constants.apiRoot}/${this.url}/${this.model.id}`, model)
-          .then(({data}) => this.setModel(data))
-          .catch((error) => this.setError(error));
+        .then(({ data }) => this.setModel(data))
+        .catch((error) => this.setError(error));
     }
 
     @action
     setError(error) {
-      console.log(error);
-      console.log("Response is: ", error.response);
-      let message = error.message;
+      let { message } = error;
       if (error && error.response && error.response.data && error.response.data.message) {
-        message = error.response.data.message;
+        ({ message } = error.response.data);
       }
       this.error = message;
       this.loading = false;
       this.saving = false;
+      throw error;
     }
 
     @action

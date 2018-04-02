@@ -54,8 +54,8 @@ export default class LoginForm extends React.Component {
 
   renderStatus() {
     const { security } = this.props;
-    if (security.loggingError) {
-      return <p className="text-danger">{security.loggingError}</p>;
+    if (security.loginError) {
+      return <p className="text-danger">{security.loginError}</p>;
     } else if (security.loggingIn) {
       return <p>Logging in...</p>;
     }

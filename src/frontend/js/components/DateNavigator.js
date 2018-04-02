@@ -31,12 +31,12 @@ export default class DateNavigator extends React.Component {
   }
 
   render() {
-    return  <div className="date-navigator">
+    return <div className="date-navigator">
       <Button onClick={this.handleClickPrevious}>&lt; Previous</Button>
       &nbsp;|&nbsp;
       <Button onClick={this.handleClickToday}>Today</Button>
       &nbsp;|&nbsp;
       <Button onClick={this.handleClickNext}>Next &gt;</Button>
-    </div>
+    </div>;
   }
 }

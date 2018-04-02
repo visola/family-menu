@@ -26,11 +26,13 @@ export default class CreateFamilyForm extends React.Component {
   }
 
   handleChangeFamily(e, field) {
-    this.state.family.model[field] = e.target.value;
+    const { family } = this.state;
+    family.model[field] = e.target.value;
+    this.setState({ family });
   }
 
   handleChangeState(e, field) {
-    this.setState({ [field]: e.target.value })
+    this.setState({ [field]: e.target.value });
   }
 
   handleSubmit(e) {
@@ -41,7 +43,7 @@ export default class CreateFamilyForm extends React.Component {
     };
 
     this.state.family
-      .save({password: this.state.password})
+      .save({ password: this.state.password })
       .then(() => this.props.security.login(loginRequest));
   }
 

@@ -1,4 +1,5 @@
 import { inject, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import PlannedMeal from './PlannedMeal';
@@ -6,11 +7,18 @@ import PlannedMeal from './PlannedMeal';
 @inject('dateRange', 'meals', 'people', 'plannedMeals')
 @observer
 export default class Meals extends React.Component {
+  static propTypes = {
+    dateRange: PropTypes.object.isRequired,
+    meals: PropTypes.object.isRequired,
+    people: PropTypes.object.isRequired,
+    plannedMeals: PropTypes.object.isRequired,
+  }
+
   handlePlannedMealChanged(plannedMeal) {
     this.props.plannedMeals.saveOne(plannedMeal);
   }
 
-  render () {
+  render() {
     const { days } = this.props.dateRange;
 
     if (this.props.meals.loading || this.props.people.loading) {
@@ -42,8 +50,8 @@ export default class Meals extends React.Component {
       return p.person.id === person.id
         && p.meal.id === meal.id
         && p.plannedDate.isSame(day, 'day');
-      });
-      return <PlannedMeal
+    });
+    return <PlannedMeal
         key={person.id}
         day={day}
         meal={meal}
