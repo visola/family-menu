@@ -1,9 +1,9 @@
 import React from 'react';
 
-import DateNavigator from '../containers/DateNavigator';
-import Meals from '../containers/Meals';
-import People from '../containers/People';
-import PortionCounter from '../containers/PortionCounter';
+import DateNavigator from './DateNavigator';
+import Meals from './Meals';
+import People from './People';
+import PortionCounter from './PortionCounter';
 
 class Home extends React.Component {
   render() {

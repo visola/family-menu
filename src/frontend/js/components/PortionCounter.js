@@ -1,8 +1,15 @@
+import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 
-class PortionCounter extends React.Component {
+@inject('dateRange', 'plannedMeals')
+@observer
+export default class PortionCounter extends React.Component {
+  static propTypes = {
+    dateRange: PropTypes.object.isRequired,
+    plannedMeals: PropTypes.object.isRequired,
+  }
+
   render() {
     return <div className="portion-counter">
       <h3>Portions this week:</h3>
@@ -19,8 +26,13 @@ class PortionCounter extends React.Component {
   }
 
   renderPortions() {
+    const { plannedMeals } = this.props;
+    if (plannedMeals.length === 0) {
+      return <span>No meals planned yet.</span>;
+    }
+
     const portionCountByDishName = {};
-    this.props.plannedMeals.forEach((plannedMeal) => {
+    plannedMeals.forEach((plannedMeal) => {
       plannedMeal.dishes.forEach((dish) => {
         const countContainer = portionCountByDishName[dish.name] || { count: 0, dish };
         countContainer.count += 1;
@@ -32,22 +44,3 @@ class PortionCounter extends React.Component {
       .map((c) => this.renderPortionCount(c.dish, c.count));
   }
 }
-
-PortionCounter.propTypes = {
-  plannedMeals: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    plannedDate: PropTypes.object.isRequired,
-    dishes: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })),
-  })).isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    plannedMeals: state.plannedMeals.list,
-  };
-};
-
-export default connect(mapStateToProps)(PortionCounter);
